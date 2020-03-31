@@ -1,7 +1,5 @@
 "use strict";
 
-import * as _ from 'underscore';
-
 import  {
     ServicesList,
     ServiceDescriptionItem,

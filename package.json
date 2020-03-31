@@ -1,11 +1,8 @@
 {
   "name": "curli-di",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Lightweight dependency injection container for JavaScript/TypeScript without using decorators",
   "main": "index",
-  "module": "./dist/esm5/index.js",
-  "es2015": "./dist/esm2015/index.js",
-  "typings": "./dist/typings/index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run build:all",
     "build:all": "tsc",
