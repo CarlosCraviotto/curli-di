@@ -1,6 +1,4 @@
-//import {chai} from "chai";
 import chai = require('chai');
-//import {testdoble} from "testdouble";
 
 import {DependencyInjection, ExternalDependencies} from "../..";
 import {ServiceDescriptionItem} from "../../Lists";
@@ -10,11 +8,15 @@ class NewService {
 };
 
 class NewService2 {
-    constructor(public otherService: NewService){}
+    constructor(public otherService: NewService) {
+    }
+};
+
+class NewToInject {
 };
 
 const dependency2 = {things: "yes", "isIt": true},
-      dependency1 = true;
+    dependency1 = true;
 
 describe('DependencyInjection service', function () {
 
@@ -22,15 +24,16 @@ describe('DependencyInjection service', function () {
         return new DependencyInjection(externalDependencies);
     };
 
+
     it('should register a new class', function () {
         const dependencyInjection = getClass();
-
 
 
         dependencyInjection.registerService("newService", [], NewService);
         const newService = new NewService();
         chai.assert.deepEqual(newService, dependencyInjection.get("newService"));
     });
+
 
     it('External dependencies', function () {
         const externalDependencies = new ExternalDependencies();
@@ -62,6 +65,7 @@ describe('DependencyInjection service', function () {
         }, "Service descriptions with name 'dependency1' not found.");
     });
 
+
     it('Cheking remove Registered Service Descriptions', function () {
         const dependencyInjection = getClass(),
             serviceName: string = "newService";
@@ -74,6 +78,7 @@ describe('DependencyInjection service', function () {
         }, "Service descriptions with name '" + serviceName + "' not found.");
     });
 
+
     it('Create two services with same name', function () {
         const dependencyInjection = getClass(),
             serviceName: string = "newService";
@@ -85,6 +90,7 @@ describe('DependencyInjection service', function () {
         }, "The service with name " + serviceName + " already registered.");
     });
 
+
     it('Cheking edit Registered Service Descriptions', function () {
         const dependencyInjection = getClass(),
             serviceName: string = "newService",
@@ -92,7 +98,8 @@ describe('DependencyInjection service', function () {
 
         dependencyInjection.registerService(serviceName2, [], NewService2);
         dependencyInjection.registerService(serviceName, [], NewService);
-        dependencyInjection.editRegisteredServiceDescriptions(serviceName2, (serviceDescription: ServiceDescriptionItem)=>{
+
+        dependencyInjection.editRegisteredServiceDescriptions(serviceName2, (serviceDescription: ServiceDescriptionItem) => {
             serviceDescription.setDependencies([serviceName]);
         });
 
@@ -120,23 +127,18 @@ describe('DependencyInjection service', function () {
     it('Testing dependencies injection class function errors', function () {
         const dependencyInjection = getClass();
 
-
         chai.assert.throws(function () {
-            dependencyInjection.registerService("newService", ["newToInject"], function(){});
+            dependencyInjection.registerService("newService", ["newToInject"], function () {});
         }, "This is not a constructor function");
 
         chai.assert.throws(function () {
             dependencyInjection.registerService("newService", ["newToInject"], {});
         }, "This is not a constructor function");
-
     });
 
 
     it('Testing dependencies injection into service', function () {
         const dependencyInjection = getClass();
-
-        class NewToInject {
-        };
 
         class NewService {
             public constructor(newToInject: any) {
@@ -151,12 +153,8 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Testing auto init in service', function () {
+    it('Testing auto init in services', function () {
         const dependencyInjection = getClass();
-
-        function NewToInject() {
-
-        };
 
         function NewService(newToInject: any) {
             chai.assert.deepEqual(newToInject, dependencyInjection.get("newToInject"));
@@ -165,22 +163,23 @@ describe('DependencyInjection service', function () {
         dependencyInjection.registerService("newService", ["newToInject"], NewService, true);
         dependencyInjection.registerService("newToInject", [], NewToInject);
 
-        dependencyInjection.callAllServicesToCall();
+        dependencyInjection.callAllServicesWithAutoInit();
     });
+
 
     it('Injection of recursion dependencies', function () {
         const dependencyInjection = getClass();
 
-        function NewToInject() {
-        };
-
-        NewToInject.prototype.injectDependence = function (newService: any) {
-            chai.assert.deepEqual(newService, dependencyInjection.get("newService"));
-            this.newService = newService;
+        class NewToInject {
+            public newService: any;
+            public injectDependence (newService: any) {
+                chai.assert.deepEqual(newService, dependencyInjection.get("newService"));
+                this.newService = newService;
+            };
         };
 
         class NewServiceRD {
-            public constructor(public newToInject: any){
+            public constructor(public newToInject: any) {
                 chai.assert.deepEqual(newToInject, dependencyInjection.get("newToInject"));
             }
         };
@@ -188,20 +187,15 @@ describe('DependencyInjection service', function () {
         dependencyInjection.registerService("newService", ["newToInject"], NewServiceRD, true);
         dependencyInjection.registerService("newToInject", ["newService"], NewToInject, true, NewToInject.prototype.injectDependence);
 
-        dependencyInjection.callAllServicesToCall();
+        dependencyInjection.callAllServicesWithAutoInit();
 
         chai.assert.deepEqual(dependencyInjection.get("newService"), dependencyInjection.get("newToInject").newService);
         chai.assert.deepEqual(dependencyInjection.get("newToInject"), dependencyInjection.get("newService").newToInject);
     });
 
+
     it('Get list of names of services already called', function () {
         const dependencyInjection = getClass();
-
-        function NewToInject() {
-        };
-
-        function NewService() {
-        };
 
         dependencyInjection.registerService("newService", [], NewService);
         dependencyInjection.registerService("newToInject", [], NewToInject);
@@ -213,5 +207,4 @@ describe('DependencyInjection service', function () {
 
         chai.assert.deepEqual(list1, list2);
     });
-
 });

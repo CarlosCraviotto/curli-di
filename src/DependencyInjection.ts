@@ -46,7 +46,7 @@ export class  DependencyInjection{
 
     /**
      * Register Service in the dependence injection
-     * @param {string} service The name of the service
+     * @param {string} serviceName The name of the service
      * @param {array} dependencies The array with the dependencies as string
      * @param {function} serviceFunc The function to create the service
      * @param {boolean} autoInit If it's auto initialize once it's register
