@@ -1,0 +1,12 @@
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Dependency directories
+node_modules/
+
+# Compiled output
+dist/
+
+.nyc_output/
+.idea/
