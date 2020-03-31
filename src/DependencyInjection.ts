@@ -83,8 +83,8 @@ export class  DependencyInjection{
      * this method initialize all the services to call without instantiate.
      * @returns {void}
      */
-    public callAllServicesToCall (): void {
-        this.servicesToCall.callAllServicesToCall(this);
+    public callAllServicesWithAutoInit (): void {
+        this.servicesToCall.callAllServicesWithAutoInit(this);
     };
 
     /**

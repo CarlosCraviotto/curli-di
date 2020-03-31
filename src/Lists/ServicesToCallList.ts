@@ -8,7 +8,7 @@ export class ServicesToCallList extends AbstractServiceStringList{
         super();
     }
 
-    public callAllServicesToCall(dependencyInjection: DependencyInjection) {
+    public callAllServicesWithAutoInit(dependencyInjection: DependencyInjection) {
         for (let i = 0; i < this.list.length; i++) {
             dependencyInjection.get(this.list[i]);
         }
