@@ -25,7 +25,7 @@ export class ServicesList {
         });
 
         if (!(service instanceof ServiceItem)){
-            throw new ServiceNotFoundException(service);
+            throw new ServiceNotFoundException(name);
         }
 
         return service;
