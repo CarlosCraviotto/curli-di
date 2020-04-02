@@ -20,12 +20,12 @@ const dependency2 = {things: "yes", "isIt": true},
 
 describe('DependencyInjection service', function () {
 
-    function getClass(externalDependencies: ExternalDependencies = new ExternalDependencies()) {
+    function getClass(externalDependencies?: ExternalDependencies) {
         return new DependencyInjection(externalDependencies);
     };
 
 
-    it('should register a new class', function () {
+    it('Should register a new class', function () {
         const dependencyInjection = getClass();
 
 
@@ -66,7 +66,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Cheking remove Registered Service Descriptions', function () {
+    it('Checking remove Registered Service Descriptions', function () {
         const dependencyInjection = getClass(),
             serviceName: string = "newService";
 
@@ -91,7 +91,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Cheking edit Registered Service Descriptions', function () {
+    it('Checking edit Registered Service Descriptions', function () {
         const dependencyInjection = getClass(),
             serviceName: string = "newService",
             serviceName2: string = "newService2";
