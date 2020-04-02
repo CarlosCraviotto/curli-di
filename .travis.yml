@@ -6,3 +6,5 @@ node_js:
 script:
   - npm run build
   - npm run test:coverage
+after_success:
+  - nyc report --reporter=text-lcov | coveralls
