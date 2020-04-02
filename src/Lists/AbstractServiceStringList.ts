@@ -34,11 +34,7 @@ export abstract class AbstractServiceStringList extends EventEmitter{
         try {
             this.find(serviceName);
         } catch (e) {
-            if (!(e instanceof ServiceNotFoundException)) {
-                throw e;
-            } else {
-                exist = false;
-            }
+            exist = false;
         }
         return exist;
     }
