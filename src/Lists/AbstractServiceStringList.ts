@@ -1,5 +1,5 @@
 import {ServiceNotFoundException} from "../Exceptions";
-import {EventEmitter} from "../Events/EventEmitter";
+import {EventEmitter} from "../Events";
 import {ActionListEnumType} from "./ActionListEnumType";
 
 

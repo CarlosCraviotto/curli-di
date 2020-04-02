@@ -1,4 +1,4 @@
-import {IObserver} from "../Events/IObserver";
+import {IObserver} from "../Events";
 import {LazyDependency} from "./LazyDependency";
 import {ActionListEnumType} from "../Lists/ActionListEnumType";
 import {ServicesCreatingList} from "../Lists";
