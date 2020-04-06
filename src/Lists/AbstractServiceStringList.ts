@@ -48,7 +48,7 @@ export abstract class AbstractServiceStringList extends EventEmitter{
         this.sendNotification(ActionListEnumType.Remove, serviceName);
     }
 
-    protected restartList(): void {
+    public restartList(): void {
         this.list = [];
     }
 
