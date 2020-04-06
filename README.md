@@ -1,7 +1,10 @@
 # Curli-DI
 
+
 [![Build Status](https://travis-ci.org/CarlosCraviotto/curli-di.svg?branch=master)](https://travis-ci.com/github/CarlosCraviotto/curli-di)
 [![Coverage Status](https://coveralls.io/repos/github/CarlosCraviotto/curli-di/badge.svg?branch=master&cach=ff)](https://coveralls.io/github/CarlosCraviotto/curli-di?branch=master)
+[![npm version](https://badge.fury.io/js/curli-di.svg)](https://badge.fury.io/js/curli-di)
+[![Dependency Status](https://david-dm.org/CarlosCraviotto/curli-di.png)](https://david-dm.org/CarlosCraviotto/curli-di)
 
 A Dependency Injection (DI) library in typescript without using decorators.
 
