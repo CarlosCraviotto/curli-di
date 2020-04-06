@@ -51,11 +51,7 @@ export class ServicesDescriptionCollection {
         try {
             this.find(name);
         } catch (e) {
-            if (!(e instanceof ServiceDescriptionsNotFoundException)) {
-                throw e;
-            } else {
-                exist = false;
-            }
+            exist = false;
         }
         return exist;
     }

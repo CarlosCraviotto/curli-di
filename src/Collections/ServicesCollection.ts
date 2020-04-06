@@ -49,11 +49,7 @@ export class ServicesCollection {
         try {
             this.find(name);
         } catch (e) {
-            if (!(e instanceof ServiceNotFoundException)) {
-                throw e;
-            } else {
-                exist = false;
-            }
+            exist = false;
         }
         return exist;
     }
