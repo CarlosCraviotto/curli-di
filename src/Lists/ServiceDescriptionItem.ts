@@ -1,5 +1,5 @@
-import {ThisIsNotAConstructorFunctionException} from "../Exceptions";
-import {ServiceNameDescriptionVO} from "../VOs";
+import {ThisIsNotAConstructorFunctionException} from '../Exceptions';
+import {ServiceNameDescriptionVO} from '../VOs';
 
 export class ServiceDescriptionItem {
 

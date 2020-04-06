@@ -1,8 +1,8 @@
 
-import {AbstractServiceStringList} from "./AbstractServiceStringList";
-import {DependencyInjection} from "./../DependencyInjection";
+import {AbstractServiceStringList} from './AbstractServiceStringList';
+import {DependencyInjection} from './../DependencyInjection';
 
-export class ServicesToCallList extends AbstractServiceStringList{
+export class ServicesToCallList extends AbstractServiceStringList {
 
     public constructor() {
         super();

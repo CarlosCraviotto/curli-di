@@ -1,7 +1,7 @@
-import {IObserver} from "../Events";
-import {LazyDependency} from "./LazyDependency";
-import {ActionListEnumType} from "../Lists/ActionListEnumType";
-import {ServicesCreatingList} from "../Lists";
+import {IObserver} from '../Events';
+import {LazyDependency} from './LazyDependency';
+import {ActionListEnumType} from '../Lists/ActionListEnumType';
+import {ServicesCreatingList} from '../Lists';
 
 export class LazyDependencies implements IObserver {
 
@@ -38,7 +38,7 @@ export class LazyDependencies implements IObserver {
     }
 
     private cutEvent(eventName: string): Array<string> {
-        return eventName.split(":");
+        return eventName.split(':');
     }
 
     private applyDoneDependency(dependency: string) {

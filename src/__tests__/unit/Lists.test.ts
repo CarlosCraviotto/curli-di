@@ -1,11 +1,11 @@
 import chai = require('chai');
 
-import {ServicesList, ServicesCreatingList} from "../../Lists";
-import {ServiceNameDescriptionVO} from "../../VOs";
-import {IObserver} from "../../Events";
+import {ServicesList, ServicesCreatingList} from '../../Lists';
+import {ServiceNameDescriptionVO} from '../../VOs';
+import {IObserver} from '../../Events';
 
 class FakeObserver implements IObserver {
-    private eventName: string = "";
+    private eventName: string = '';
 
     notify(eventName: string): void {
         this.eventName = eventName;
@@ -26,7 +26,7 @@ describe('Lists classes tests', function () {
 
     it('Should find element in ServicesCreatingList', function () {
         const servicesCreatingList = new ServicesCreatingList(),
-            serviceName = "foo";
+            serviceName = 'foo';
 
         servicesCreatingList.add(serviceName);
 
@@ -36,7 +36,7 @@ describe('Lists classes tests', function () {
 
     it('Should add two times a service name into ServicesCreatingList and still getting it.', function () {
         const servicesCreatingList = new ServicesCreatingList(),
-            serviceName = "foo";
+            serviceName = 'foo';
 
         servicesCreatingList.add(serviceName);
         servicesCreatingList.add(serviceName);
@@ -47,8 +47,8 @@ describe('Lists classes tests', function () {
 
     it('Should attach and detach event in ServicesCreatingList', function () {
         const servicesCreatingList = new ServicesCreatingList(),
-            serviceName1 = "foo",
-            serviceName2 = "foo2",
+            serviceName1 = 'foo',
+            serviceName2 = 'foo2',
             fakeObserver: FakeObserver = new FakeObserver();
 
         servicesCreatingList.attach(fakeObserver);
@@ -62,23 +62,27 @@ describe('Lists classes tests', function () {
 
     it('Should not find element in list servicesList', function () {
         const servicesList = getClassServicesList(),
-            serviceName = "foo";
+            serviceName = 'foo';
 
         chai.assert.throws(function () {
             servicesList.find(serviceName);
-        }, "Service with name '" + serviceName + "' not found.");
+        }, 'Service with name '
+        ' + serviceName + '
+        ' not found.'
+    )
+        ;
     });
 
 
     it('Should add two services with same name in list servicesList', function () {
         const servicesList = getClassServicesList(),
-            serviceName = "foo";
+            serviceName = 'foo';
 
         servicesList.add(new ServiceNameDescriptionVO(serviceName), 'foo');
 
         chai.assert.throws(function () {
             servicesList.add(new ServiceNameDescriptionVO(serviceName), 'foo');
-        }, "The service with name " + serviceName + " already exist.");
+        }, 'The service with name ' + serviceName + ' already exist.');
     });
 
 });

@@ -1,6 +1,6 @@
-import {ServiceNotFoundException} from "../Exceptions";
-import {EventEmitter} from "../Events";
-import {ActionListEnumType} from "./ActionListEnumType";
+import {ServiceNotFoundException} from '../Exceptions';
+import {EventEmitter} from '../Events';
+import {ActionListEnumType} from './ActionListEnumType';
 
 
 export abstract class AbstractServiceStringList extends EventEmitter{
@@ -53,7 +53,7 @@ export abstract class AbstractServiceStringList extends EventEmitter{
     }
 
     private sendNotification(action: string, serviceName: string) {
-        this.notify(action + ":" + serviceName);
+        this.notify(action + ':' + serviceName);
     }
 
 }

@@ -1,4 +1,6 @@
+
 export class StringVO {
+
     protected readonly _value: string;
 
     public constructor(value: string) {
@@ -24,4 +26,5 @@ export class StringVO {
     protected throwEmptyValueException(): never {
         throw new Error('Empty value');
     }
+
 }

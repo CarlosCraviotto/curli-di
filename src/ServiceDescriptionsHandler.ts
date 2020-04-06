@@ -1,6 +1,6 @@
-import {ServiceNameDescriptionVO} from "./VOs";
-import {ServicesDescriptionList, ServicesToCallList} from "./Lists";
-import {ExternalServicesRegister} from "./ExternalServicesRegister";
+import {ServiceNameDescriptionVO} from './VOs';
+import {ServicesDescriptionList, ServicesToCallList} from './Lists';
+import {ExternalServicesRegister} from './ExternalServicesRegister';
 
 
 export class ServiceDescriptionsHandler {

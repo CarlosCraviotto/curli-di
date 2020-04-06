@@ -1,6 +1,6 @@
-import {ServiceDescriptionItem} from "./ServiceDescriptionItem";
-import {ServiceDescriptionsNotFoundException} from "../Exceptions";
-import {ServiceNameDescriptionVO} from "../VOs";
+import {ServiceDescriptionItem} from './ServiceDescriptionItem';
+import {ServiceDescriptionsNotFoundException} from '../Exceptions';
+import {ServiceNameDescriptionVO} from '../VOs';
 
 export class ServicesDescriptionList {
     private list: Array<ServiceDescriptionItem>;
@@ -13,7 +13,7 @@ export class ServicesDescriptionList {
     public add (serviceName: ServiceNameDescriptionVO, dependencies: Array<string>, serviceFunc: object, injectDependencies?: object): void {
 
         if (this.exist(serviceName)) {
-            throw new Error("The service with name " + serviceName.getValue() + " already registered.");
+            throw new Error('The service with name ' + serviceName.getValue() + ' already registered.');
         } else {
             this.list.push(new ServiceDescriptionItem(serviceName, dependencies, serviceFunc, injectDependencies));
         }

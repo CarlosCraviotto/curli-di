@@ -1,4 +1,4 @@
 export enum ActionListEnumType {
-    Remove = "REMOVE",
-    Add = "ADD"
+    Remove = 'REMOVE',
+    Add = 'ADD'
 }

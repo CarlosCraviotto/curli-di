@@ -1,6 +1,6 @@
 
-import {ServicesList} from "./Lists/ServicesList";
-import {ExternalDependencyNameVO} from "./VOs";
+import {ServicesList} from './Lists/ServicesList';
+import {ExternalDependencyNameVO} from './VOs';
 
 export class ExternalDependencies {
     protected dependencies: ServicesList = new ServicesList();

@@ -1,6 +1,6 @@
 
-import {ServiceDescriptionsHandler} from "./ServiceDescriptionsHandler";
-import {ServiceDescriptionItem} from "./Lists";
+import {ServiceDescriptionsHandler} from './ServiceDescriptionsHandler';
+import {ServiceDescriptionItem} from './Lists';
 
 export class ExternalServicesRegister extends ServiceDescriptionsHandler{
 

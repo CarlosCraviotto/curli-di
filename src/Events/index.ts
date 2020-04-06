@@ -1,2 +1,2 @@
-export {EventEmitter} from "./EventEmitter";
-export {IObserver} from "./IObserver";
+export {EventEmitter} from './EventEmitter';
+export {IObserver} from './IObserver';

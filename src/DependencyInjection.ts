@@ -1,17 +1,17 @@
-"use strict";
+'use strict';
 
 import  {
     ServicesList,
     ServiceDescriptionItem,
     ServicesCreatingList,
-}  from "./Lists";
+}  from './Lists';
 
-import {ServiceNotFoundException} from "./Exceptions";
+import {ServiceNotFoundException} from './Exceptions';
 
-import  {ExternalDependencies}  from "./ExternalDependencies";
-import {LazyDependencies} from "./Dependencies/LazyDependencies";
-import {ExternalDependencyNameVO, ServiceNameDescriptionVO} from "./VOs";
-import {ServiceDescriptionsHandler} from "./ServiceDescriptionsHandler";
+import  {ExternalDependencies}  from './ExternalDependencies';
+import {LazyDependencies} from './Dependencies/LazyDependencies';
+import {ExternalDependencyNameVO, ServiceNameDescriptionVO} from './VOs';
+import {ServiceDescriptionsHandler} from './ServiceDescriptionsHandler';
 
 
 
@@ -131,7 +131,7 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
         let args: Array<any> = [];
 
         //if we have a injectDependencies function in the service description.
-        if (typeof injectDependencies === "function") {
+        if (typeof injectDependencies === 'function') {
             const dependenciesToCheck: Array<string> = serviceDescription.getDependencies(),
             serviceName = serviceDescription.getServiceName();
             dependenciesToCheck.push(serviceName);
@@ -149,5 +149,3 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
     }
 
 };
-
-

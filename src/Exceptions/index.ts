@@ -1,3 +1,3 @@
-export {ThisIsNotAConstructorFunctionException} from "./ThisIsNotAConstructorFunctionException";
-export {ServiceDescriptionsNotFoundException} from "./ServiceDescriptionsNotFoundException";
-export {ServiceNotFoundException} from "./ServiceNotFoundException";
+export {ThisIsNotAConstructorFunctionException} from './ThisIsNotAConstructorFunctionException';
+export {ServiceDescriptionsNotFoundException} from './ServiceDescriptionsNotFoundException';
+export {ServiceNotFoundException} from './ServiceNotFoundException';

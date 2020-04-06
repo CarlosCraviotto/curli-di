@@ -1,4 +1,4 @@
-import {IObserver} from "./IObserver";
+import {IObserver} from './IObserver';
 
 export abstract class EventEmitter {
     protected observersList: Array<IObserver>;

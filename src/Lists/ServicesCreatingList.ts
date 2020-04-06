@@ -1,5 +1,5 @@
 
-import {AbstractServiceStringList} from "./AbstractServiceStringList";
+import {AbstractServiceStringList} from './AbstractServiceStringList';
 
 
 export class ServicesCreatingList  extends AbstractServiceStringList{

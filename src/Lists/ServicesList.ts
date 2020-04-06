@@ -1,6 +1,6 @@
-import {ServiceItem} from "./ServiceItem";
-import {ServiceNotFoundException} from "../Exceptions";
-import {ExternalDependencyNameVO, ServiceNameDescriptionVO} from "../VOs";
+import {ServiceItem} from './ServiceItem';
+import {ServiceNotFoundException} from '../Exceptions';
+import {ExternalDependencyNameVO, ServiceNameDescriptionVO} from '../VOs';
 
 export class ServicesList {
     private list: Array<ServiceItem>;
@@ -77,7 +77,7 @@ export class ServicesList {
 
     private addNewService <T extends {}>(name: string, service: T) {
         if (this.exist(name)) {
-            throw new Error("The service with name " + name + " already exist.");
+            throw new Error('The service with name ' + name + ' already exist.');
         } else {
             this.list.push(new ServiceItem(name, service));
         }

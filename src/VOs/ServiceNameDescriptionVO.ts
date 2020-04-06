@@ -1,5 +1,4 @@
-import {ServiceNameVO} from "./ServiceNameVO";
+import {ServiceNameVO} from './ServiceNameVO';
 
 export class ServiceNameDescriptionVO extends ServiceNameVO {
-
 }
