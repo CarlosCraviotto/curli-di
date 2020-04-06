@@ -13,18 +13,38 @@ Install by `npm`
 ```sh
 npm install --save curli-di
 ```
-#### Usage
+#### Basic Usage
 
 ```typescript
-import {DependencyInjection, ExternalDependencies} from "curli-di";
+import {DependencyInjection} from "curli-di";
 import {Database} from "database";
-
 
 class Foo {
   constructor(private database: Database) {}
 }
 
+const container = new DependencyInjection();
 
+//register the dependencies for the class
+container.registerService("dataBase", [], Database);
+container.registerService("foo", ["dataBase"], Foo);
+
+//creating the service
+const foo = container.get("foo");
+
+```
+
+### Registering external dependencies/properties:
+
+Some time we need to inject properties or other kind of values into our services, for this we use the class ExternalDependencies like here: 
+
+```typescript
+import {DependencyInjection, ExternalDependencies} from "curli-di";
+import {Database} from "database";
+
+class Foo {
+  constructor(private database: Database) {}
+}
 
 // Register previous dependencies already instantiated
 const externalDependencies = new ExternalDependencies();
@@ -33,8 +53,8 @@ externalDependencies.add("dataBasePass", "");
 
 const container = new DependencyInjection(externalDependencies);
 
-//registering of dependencies with the classes
-container.registerService("dataBase", ["dataBaseUser", "dataBasePass"], Database);
+//register the dependencies for the class
+container.registerService("dataBase", ["@dataBaseUser", "@dataBasePass"], Database);
 container.registerService("foo", ["dataBase"], Foo);
 
 //creating the service
@@ -42,14 +62,26 @@ const foo = container.get("foo");
 
 ```
 
+As this example shows, to access to any external dependency or property we need to add the prefix @.
+
+Also to inject or use a external dependency we can use the registerServiceBuilded method in the container after we initialized it:
+  ```typescript
+import {DependencyInjection} from "curli-di";
+
+const container = new DependencyInjection();
+container.registerServiceBuilded("dataBaseUser", "root");
+
+const dataBaseUser: string = container.get("@dataBaseUser");
+
+ ```
+
+
 ### Circular dependency:
 
-To create a circular dependency one of the services will receive their dependencies with a different method than the constructor. 
+To create a circular dependency between two services, one of the then will receive their dependencies with a different method than the constructor. 
 
 ```typescript
 import {DependencyInjection} from "curli-di";
-
-
 
 class Foo {
     constructor(private database: Database, private taa: Taa) {}
@@ -75,28 +107,30 @@ const foo = container.get("foo");
 
 ```
 
-### Adding external dependencies:
+### Registering services descriptions in different sides of the application:
 
-Some time we need to work with properties, externals objects, or other kind of values and inject these into our services. To do it, we have two ways: 
- - Inject these using the ExternalDependencies object before we start the container:
- ```typescript
-import {DependencyInjection, ExternalDependencies} from "curli-di";
+If we want to split the responsibility of register services in different sides of the application we can perform it using the ExternalServicesRegister class:
 
-const externalDependencies = new ExternalDependencies();
-externalDependencies.add("dataBaseUser", "root");
-externalDependencies.add("dataBasePass", "");
+```typescript
+import {DependencyInjection, ExternalServicesRegister} from "curli-di";
+import {Database} from "database";
 
-const container = new DependencyInjection(externalDependencies);
+class Foo {
+  constructor(private database: Database) {}
+}
 
-const dataBaseUser: string = container.get("dataBaseUser");
+// Register previous dependencies already instantiated
+const container = new DependencyInjection(),
+      externalServicesRegister = new ExternalServicesRegister();
+
+
+//register the dependencies for the class
+externalServicesRegister.registerService("dataBase", ["@dataBaseUser", "@dataBasePass"], Database);
+externalServicesRegister.registerService("foo", ["dataBase"], Foo);
+
+container.registerExternalServiceRegister(externalServicesRegister);
+
+//creating the service
+const foo = container.get("foo");
+
 ```
- - Use the registerServiceBuilded method in the container after we initialized it:
-  ```typescript
-import {DependencyInjection} from "curli-di";
-
-const container = new DependencyInjection();
-container.registerServiceBuilded("dataBaseUser", "root");
-
-const dataBaseUser: string = container.get("dataBaseUser");
-
- ```

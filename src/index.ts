@@ -1,3 +1,3 @@
 export {DependencyInjection} from "./DependencyInjection";
 export {ExternalDependencies} from "./ExternalDependencies";
-export {ExternalServiceRegister} from "./ExternalServiceRegister";
+export {ExternalServicesRegister} from "./ExternalServicesRegister";

@@ -1,6 +1,6 @@
 import {ServiceNameDescriptionVO} from "./VOs";
 import {ServicesDescriptionList, ServicesToCallList} from "./Lists";
-import {ExternalServiceRegister} from "./ExternalServiceRegister";
+import {ExternalServicesRegister} from "./ExternalServicesRegister";
 
 
 export class ServiceDescriptionsHandler {
@@ -38,7 +38,7 @@ export class ServiceDescriptionsHandler {
         this.serviceDescriptions.edit(new ServiceNameDescriptionVO(serviceName), callback);
     };
 
-    public registerExternalServiceRegister(externalServiceRegister: ExternalServiceRegister) {
-        externalServiceRegister.addOwnServicesDescriptionToOtherServiceRegister(this);
+    public registerExternalServicesRegister(externalServicesRegister: ExternalServicesRegister) {
+        externalServicesRegister.addOwnServicesDescriptionToOtherServiceRegister(this);
     }
 }

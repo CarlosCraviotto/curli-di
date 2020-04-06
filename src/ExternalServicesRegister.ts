@@ -2,7 +2,7 @@
 import {ServiceDescriptionsHandler} from "./ServiceDescriptionsHandler";
 import {ServiceDescriptionItem} from "./Lists";
 
-export class ExternalServiceRegister extends ServiceDescriptionsHandler{
+export class ExternalServicesRegister extends ServiceDescriptionsHandler{
 
     constructor() {
         super();

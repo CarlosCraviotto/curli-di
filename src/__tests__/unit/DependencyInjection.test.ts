@@ -2,7 +2,7 @@ import chai = require('chai');
 
 import {DependencyInjection, ExternalDependencies} from "../..";
 import {ServiceDescriptionItem} from "../../Lists";
-import {ExternalServiceRegister} from "../../ExternalServiceRegister";
+import {ExternalServicesRegister} from "../../ExternalServicesRegister";
 
 class NewService {
     public name = "NewServiceClass";
@@ -244,12 +244,12 @@ describe('DependencyInjection service', function () {
 
     it('Should register classes using external register', function () {
         const dependencyInjection = getClass(),
-            externalServiceRegister = new ExternalServiceRegister();
+            externalServicesRegister = new ExternalServicesRegister();
 
-        externalServiceRegister.registerService("newService", [], NewService);
-        externalServiceRegister.registerService("newToInject", [], NewToInject);
+        externalServicesRegister.registerService("newService", [], NewService);
+        externalServicesRegister.registerService("newToInject", [], NewToInject);
 
-        dependencyInjection.registerExternalServiceRegister(externalServiceRegister);
+        dependencyInjection.registerExternalServicesRegister(externalServicesRegister);
 
         dependencyInjection.get("newService");
 
@@ -261,14 +261,14 @@ describe('DependencyInjection service', function () {
 
     it('Should register classes using two external registers', function () {
         const dependencyInjection = getClass(),
-            externalServiceRegister1 = new ExternalServiceRegister(),
-            externalServiceRegister2 = new ExternalServiceRegister();
+            externalServiceRegister1 = new ExternalServicesRegister(),
+            externalServiceRegister2 = new ExternalServicesRegister();
 
         externalServiceRegister1.registerService("newService", [], NewService);
         externalServiceRegister2.registerService("newToInject", [], NewToInject);
 
-        dependencyInjection.registerExternalServiceRegister(externalServiceRegister1);
-        dependencyInjection.registerExternalServiceRegister(externalServiceRegister2);
+        dependencyInjection.registerExternalServicesRegister(externalServiceRegister1);
+        dependencyInjection.registerExternalServicesRegister(externalServiceRegister2);
 
         dependencyInjection.get("newService");
         dependencyInjection.get("newToInject");
@@ -282,17 +282,17 @@ describe('DependencyInjection service', function () {
 
     it('Should create two services with same name in different registers and throw error', function () {
         const dependencyInjection = getClass(),
-            externalServiceRegister1 = new ExternalServiceRegister(),
-            externalServiceRegister2 = new ExternalServiceRegister(),
+            externalServiceRegister1 = new ExternalServicesRegister(),
+            externalServiceRegister2 = new ExternalServicesRegister(),
             serviceName: string = "newToInject";
 
         externalServiceRegister1.registerService(serviceName, [], NewService);
         externalServiceRegister2.registerService(serviceName, [], NewToInject);
 
-        dependencyInjection.registerExternalServiceRegister(externalServiceRegister1);
+        dependencyInjection.registerExternalServicesRegister(externalServiceRegister1);
 
         chai.assert.throws(function () {
-            dependencyInjection.registerExternalServiceRegister(externalServiceRegister2);
+            dependencyInjection.registerExternalServicesRegister(externalServiceRegister2);
         }, "The service with name " + serviceName + " already registered.");
     });
 });
