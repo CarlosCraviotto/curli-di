@@ -3,36 +3,35 @@
 import  {
     ServicesList,
     ServiceDescriptionItem,
-    ServicesDescriptionList,
     ServicesCreatingList,
-    ServicesToCallList
 }  from "./Lists";
 
 import {ServiceNotFoundException} from "./Exceptions";
 
 import  {ExternalDependencies}  from "./ExternalDependencies";
 import {LazyDependencies} from "./Dependencies/LazyDependencies";
+import {ExternalDependencyNameVO, ServiceNameDescriptionVO} from "./VOs";
+import {ServiceDescriptionsHandler} from "./ServiceDescriptionsHandler";
 
 
 
-export class  DependencyInjection{
+export class  DependencyInjection extends ServiceDescriptionsHandler{
 
-    private readonly serviceDescriptions: ServicesDescriptionList;
+
     private servicesList: ServicesList;
     private servicesCreatingList: ServicesCreatingList;
-    private servicesToCall: ServicesToCallList;
+
     private lazyDependencies: LazyDependencies;
 
     public constructor (private externalDependencies: ExternalDependencies = new ExternalDependencies()) {
-        this.servicesList = new ServicesList();
-        this.serviceDescriptions = new ServicesDescriptionList();
-        this.servicesCreatingList = new ServicesCreatingList();
-        this.servicesToCall = new ServicesToCallList();
+        super();
 
+        this.servicesList = new ServicesList();
+        this.servicesCreatingList = new ServicesCreatingList();
         this.lazyDependencies = new LazyDependencies(this.servicesCreatingList);
 
         this.servicesList = this.externalDependencies.transferToList(this.servicesList);
-        this.servicesList.add('container', this);
+        this.servicesList.add(new ServiceNameDescriptionVO('container'), this);
     }
 
     /**
@@ -44,39 +43,15 @@ export class  DependencyInjection{
         return this.getService(name);
     };
 
-    /**
-     * Register Service in the dependence injection
-     * @param {string} serviceName The name of the service
-     * @param {array} dependencies The array with the dependencies as string
-     * @param {function} serviceFunc The function to create the service
-     * @param {boolean} autoInit If it's auto initialize once it's register
-     * @param {method} injectDependencies Function to inject all the dependencies
-     * @returns {void}
-     */
-    public registerService (serviceName: string, dependencies: Array<string>, serviceFunc: object, autoInit?: boolean, injectDependencies?: object): void {
-        this.serviceDescriptions.add(serviceName, dependencies, serviceFunc, injectDependencies);
-
-        if (autoInit) {
-            this.servicesToCall.add(serviceName);
-        }
-    };
-
-    public removeRegisteredServiceDescriptions (serviceName: string): void {
-        this.serviceDescriptions.remove(serviceName);
-    };
-
-    public editRegisteredServiceDescriptions (serviceName: string, callback: any): void {
-        this.serviceDescriptions.edit(serviceName, callback);
-    };
 
     /**
-     * Register dependencies in the service dependence injection
+     * Register external dependencies in the service dependence injection
      * @param {string} name The name of the service
      * @param {any} service The object|string|array|any thing we want register as a service.
      * @returns {void}
      */
-    public registerServiceBuilded (name: string, service: any): void {
-        this.servicesList.add(name, service);
+    public registerServiceBuilded <T>(name: string, service: T): void {
+        this.servicesList.addExternalDependency(new ExternalDependencyNameVO(name), service);
     };
 
     /**
@@ -99,8 +74,8 @@ export class  DependencyInjection{
         return this.servicesList.find(serviceName).getService();
     };
 
-    private getServiceDescription (serviceName: string): ServiceDescriptionItem {
-        return this.serviceDescriptions.find(serviceName);
+    protected getServiceDescription (serviceName: string): ServiceDescriptionItem {
+        return this.serviceDescriptions.find(new ServiceNameDescriptionVO(serviceName));
     };
 
     private requireService (args: any, serviceCode: any) {
@@ -118,7 +93,7 @@ export class  DependencyInjection{
         let service = this.requireService(args, serviceDescription.getServiceFunc());
 
         // Add to the list services builder (cache)
-        this.servicesList.add(serviceName, service);
+        this.servicesList.add(new ServiceNameDescriptionVO(serviceName), service);
 
         this.servicesCreatingList.remove(serviceName);
 
@@ -172,6 +147,7 @@ export class  DependencyInjection{
 
         return args;
     }
+
 };
 
 

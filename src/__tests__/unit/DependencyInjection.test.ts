@@ -2,6 +2,7 @@ import chai = require('chai');
 
 import {DependencyInjection, ExternalDependencies} from "../..";
 import {ServiceDescriptionItem} from "../../Lists";
+import {ExternalServiceRegister} from "../../ExternalServiceRegister";
 
 class NewService {
     public name = "NewServiceClass";
@@ -28,36 +29,35 @@ describe('DependencyInjection service', function () {
     it('Should register a new class', function () {
         const dependencyInjection = getClass();
 
-
         dependencyInjection.registerService("newService", [], NewService);
         const newService = new NewService();
         chai.assert.deepEqual(newService, dependencyInjection.get("newService"));
     });
 
 
-    it('External dependencies', function () {
+    it('Should register external dependencies', function () {
         const externalDependencies = new ExternalDependencies();
         externalDependencies.add("dependency1", dependency1);
         externalDependencies.add("dependency2", dependency2);
         const dependencyInjection = getClass(externalDependencies);
 
-        chai.assert.deepEqual(dependency1, dependencyInjection.get("dependency1"));
-        chai.assert.deepEqual(dependency2, dependencyInjection.get("dependency2"));
+        chai.assert.deepEqual(dependency1, dependencyInjection.get("@dependency1"));
+        chai.assert.deepEqual(dependency2, dependencyInjection.get("@dependency2"));
     });
 
 
-    it('Register external dependencies in execution time', function () {
+    it('Should check register external dependencies in execution time', function () {
         const dependencyInjection = getClass();
 
         dependencyInjection.registerServiceBuilded("dependency1", dependency1);
         dependencyInjection.registerServiceBuilded("dependency2", dependency2);
 
-        chai.assert.deepEqual(dependency1, dependencyInjection.get("dependency1"));
-        chai.assert.deepEqual(dependency2, dependencyInjection.get("dependency2"));
+        chai.assert.deepEqual(dependency1, dependencyInjection.get("@dependency1"));
+        chai.assert.deepEqual(dependency2, dependencyInjection.get("@dependency2"));
     });
 
 
-    it('External dependencies error', function () {
+    it('Should check external dependencies error when try to find a service we didn\'t register', function () {
         const dependencyInjection = getClass();
 
         chai.assert.throws(function () {
@@ -66,7 +66,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Checking remove Registered Service Descriptions', function () {
+    it('Should check removing Registered Service Descriptions', function () {
         const dependencyInjection = getClass(),
             serviceName: string = "newService";
 
@@ -79,7 +79,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Create two services with same name', function () {
+    it('Should create two services with same name', function () {
         const dependencyInjection = getClass(),
             serviceName: string = "newService";
 
@@ -91,7 +91,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Checking edit Registered Service Descriptions', function () {
+    it('Should check editing the Registered Service Descriptions', function () {
         const dependencyInjection = getClass(),
             serviceName: string = "newService",
             serviceName2: string = "newService2";
@@ -107,7 +107,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Creating two instances of dependency injection with external dependencies and registering same objects different names', function () {
+    it('Should create two instances of dependency injection with external dependencies and registering same objects different names', function () {
         const externalDependencies = new ExternalDependencies();
 
         externalDependencies.add("dependency1", dependency1);
@@ -116,15 +116,33 @@ describe('DependencyInjection service', function () {
         const dependencyInjection1 = getClass(externalDependencies);
         const dependencyInjection2 = getClass(externalDependencies);
 
-        chai.assert.deepEqual(dependency1, dependencyInjection1.get("dependency1"));
-        chai.assert.deepEqual(dependency2, dependencyInjection1.get("dependency2"));
+        chai.assert.deepEqual(dependency1, dependencyInjection1.get("@dependency1"));
+        chai.assert.deepEqual(dependency2, dependencyInjection1.get("@dependency2"));
 
-        chai.assert.deepEqual(dependency2, dependencyInjection2.get("dependency2"));
-        chai.assert.deepEqual(dependency1, dependencyInjection2.get("dependency1"));
+        chai.assert.deepEqual(dependency2, dependencyInjection2.get("@dependency2"));
+        chai.assert.deepEqual(dependency1, dependencyInjection2.get("@dependency1"));
+    });
+
+    it('Should do a bulk of external dependencies and get it', function () {
+        const externalDependencies = new ExternalDependencies();
+
+        externalDependencies.bulk({
+            "dependency1": dependency1,
+            "dependency2": dependency2,
+            "dependency3": true,
+            "dependency4": "dependency4"
+        });
+
+        const dependencyInjection1 = getClass(externalDependencies);
+
+        chai.assert.deepEqual(dependency1, dependencyInjection1.get("@dependency1"));
+        chai.assert.deepEqual(dependency2, dependencyInjection1.get("@dependency2"));
+        chai.assert.deepEqual(true, dependencyInjection1.get("@dependency3"));
+        chai.assert.deepEqual("dependency4", dependencyInjection1.get("@dependency4"));
     });
 
 
-    it('Testing dependencies injection class function errors', function () {
+    it('Should throw errors when we register a service with wrong constructor', function () {
         const dependencyInjection = getClass();
 
         chai.assert.throws(function () {
@@ -136,8 +154,24 @@ describe('DependencyInjection service', function () {
         }, "This is not a constructor function");
     });
 
+    it('Should throw errors when we try to register a service with @ as first character', function () {
+        const dependencyInjection = getClass();
 
-    it('Testing dependencies injection into service', function () {
+        chai.assert.throws(function () {
+            dependencyInjection.registerService("@newService", [], NewService2);
+        }, "This service name (@newService) is not a valid name");
+    });
+
+    it('Should throw errors when we try to register a service with an empty name', function () {
+        const dependencyInjection = getClass();
+
+        chai.assert.throws(function () {
+            dependencyInjection.registerService("", [], NewService2);
+        }, "Empty service name value.");
+    });
+
+
+    it('Should register dependencies injection into service', function () {
         const dependencyInjection = getClass();
 
         class NewService {
@@ -153,7 +187,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Testing auto init in services', function () {
+    it('Should do auto init in services', function () {
         const dependencyInjection = getClass();
 
         function NewService(newToInject: any) {
@@ -167,7 +201,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Injection of recursion dependencies', function () {
+    it('Should do recursion of dependencies', function () {
         const dependencyInjection = getClass();
 
         class NewToInject {
@@ -194,7 +228,7 @@ describe('DependencyInjection service', function () {
     });
 
 
-    it('Get list of names of services already called', function () {
+    it('Should return a list of names of services already called', function () {
         const dependencyInjection = getClass();
 
         dependencyInjection.registerService("newService", [], NewService);
@@ -206,5 +240,59 @@ describe('DependencyInjection service', function () {
             list2 = dependencyInjection.getServicesList();
 
         chai.assert.deepEqual(list1, list2);
+    });
+
+    it('Should register classes using external register', function () {
+        const dependencyInjection = getClass(),
+            externalServiceRegister = new ExternalServiceRegister();
+
+        externalServiceRegister.registerService("newService", [], NewService);
+        externalServiceRegister.registerService("newToInject", [], NewToInject);
+
+        dependencyInjection.registerExternalServiceRegister(externalServiceRegister);
+
+        dependencyInjection.get("newService");
+
+        const list1 = ["container", "newService"],
+            list2 = dependencyInjection.getServicesList();
+
+        chai.assert.deepEqual(list1, list2);
+    });
+
+    it('Should register classes using two external registers', function () {
+        const dependencyInjection = getClass(),
+            externalServiceRegister1 = new ExternalServiceRegister(),
+            externalServiceRegister2 = new ExternalServiceRegister();
+
+        externalServiceRegister1.registerService("newService", [], NewService);
+        externalServiceRegister2.registerService("newToInject", [], NewToInject);
+
+        dependencyInjection.registerExternalServiceRegister(externalServiceRegister1);
+        dependencyInjection.registerExternalServiceRegister(externalServiceRegister2);
+
+        dependencyInjection.get("newService");
+        dependencyInjection.get("newToInject");
+
+        const list1 = ["container", "newService", "newToInject"],
+            list2 = dependencyInjection.getServicesList();
+
+        chai.assert.deepEqual(list1, list2);
+    });
+
+
+    it('Should create two services with same name in different registers and throw error', function () {
+        const dependencyInjection = getClass(),
+            externalServiceRegister1 = new ExternalServiceRegister(),
+            externalServiceRegister2 = new ExternalServiceRegister(),
+            serviceName: string = "newToInject";
+
+        externalServiceRegister1.registerService(serviceName, [], NewService);
+        externalServiceRegister2.registerService(serviceName, [], NewToInject);
+
+        dependencyInjection.registerExternalServiceRegister(externalServiceRegister1);
+
+        chai.assert.throws(function () {
+            dependencyInjection.registerExternalServiceRegister(externalServiceRegister2);
+        }, "The service with name " + serviceName + " already registered.");
     });
 });
