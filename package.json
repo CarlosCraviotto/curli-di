@@ -1,6 +1,6 @@
 {
   "name": "curli-di",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0",
   "description": "Lightweight dependency injection container for JavaScript/TypeScript without using decorators",
   "main": "index",
   "scripts": {
@@ -22,13 +22,19 @@
     "injection",
     "container",
     "javascript",
-    "typescript"
+    "typescript",
+    "simple di",
+    "di",
+    "ioc"
   ],
   "engines": {
     "node": ">= 6.0.0"
   },
   "files": [
     "README.md",
+    "LICENSE",
+    ".eslintrc.js",
+    ".eslintignore",
     "index.js",
     "index.ts",
     "dist",
