@@ -1,9 +1,10 @@
 
 import {AbstractServiceStringList} from './AbstractServiceStringList';
 
+export class ServicesCreatingList extends AbstractServiceStringList {
 
-export class ServicesCreatingList  extends AbstractServiceStringList{
-    public constructor() {
+    public constructor () {
         super();
     }
+
 }

@@ -1,7 +1,8 @@
 
+export class ThisIsNotAConstructorFunctionException extends Error {
 
-export class ThisIsNotAConstructorFunctionException extends Error{
-    public constructor (message: string = '') {
+    public constructor (message = '') {
         super('This is not a constructor function. ' + message);
     }
-};
+
+}

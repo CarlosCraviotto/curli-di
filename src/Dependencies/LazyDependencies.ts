@@ -1,35 +1,35 @@
-import {IObserver} from '../Events';
+import {ObserverInterface} from '../Events';
 import {LazyDependency} from './LazyDependency';
 import {ActionListEnumType} from '../Lists/ActionListEnumType';
 import {ServicesCreatingList} from '../Lists';
 
-export class LazyDependencies implements IObserver {
+export class LazyDependencies implements ObserverInterface {
 
     private lazyDependenciesList: Array<LazyDependency>;
 
-    public constructor(private servicesCreatingList: ServicesCreatingList) {
+    public constructor (private servicesCreatingList: ServicesCreatingList) {
         this.servicesCreatingList.attach(this);
         this.lazyDependenciesList = [];
     }
 
-    public notify(eventName: string): void {
+    public notify (eventName: string): void {
         const eventCut: Array<string> = this.cutEvent(eventName);
 
-        if (eventCut[0] === ActionListEnumType.Remove){
+        if (eventCut[0] === ActionListEnumType.Remove) {
             this.applyDoneDependency(eventCut[1]);
         }
     }
 
-    public addDependencies(dependenciesToCheck: Array<string>, callback: any): void {
+    public addDependencies (dependenciesToCheck: Array<string>, callback: any): void {
         dependenciesToCheck = this.cleanDependenciesToCheckList(dependenciesToCheck);
         this.lazyDependenciesList.push(new LazyDependency(dependenciesToCheck, callback));
     }
 
-    private cleanDependenciesToCheckList(dependenciesToCheck: Array<string>): Array<string>{
+    private cleanDependenciesToCheckList (dependenciesToCheck: Array<string>): Array<string> {
         const cleanDependenciesAlreadyBenCreating: Array<string> = [];
 
         this.servicesCreatingList.getList().forEach((dependency: string) => {
-            if (dependenciesToCheck.indexOf(dependency) !== -1){
+            if (dependenciesToCheck.indexOf(dependency) !== -1) {
                 cleanDependenciesAlreadyBenCreating.push(dependency);
             }
         });
@@ -37,17 +37,18 @@ export class LazyDependencies implements IObserver {
         return cleanDependenciesAlreadyBenCreating;
     }
 
-    private cutEvent(eventName: string): Array<string> {
+    private cutEvent (eventName: string): Array<string> {
         return eventName.split(':');
     }
 
-    private applyDoneDependency(dependency: string) {
+    private applyDoneDependency (dependency: string): void {
         this.lazyDependenciesList.forEach((lazyDependency: LazyDependency, index: number) => {
             lazyDependency.dependencyHasBenBuilt(dependency);
 
-            if (lazyDependency.applied()){
+            if (lazyDependency.applied()) {
                 delete this.lazyDependenciesList[index];
             }
         });
     }
+
 }

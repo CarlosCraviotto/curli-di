@@ -1,15 +1,15 @@
 export class LazyDependency {
 
-    private appliedCallback: boolean = false;
+    private appliedCallback = false;
 
-    public constructor(private dependenciesToCheck: Array<string>, private callback: any) {
+    public constructor (private dependenciesToCheck: Array<string>, private callback: any) {
     }
 
-    public dependencyHasBenBuilt(dependency: string): void {
+    public dependencyHasBenBuilt (dependency: string): void {
         const index = this.dependenciesToCheck.indexOf(dependency);
 
         if (index !== -1) {
-            //delete the dependency
+            // delete the dependency
             this.dependenciesToCheck.splice(index, 1);
             if (this.dependenciesToCheck.length <= 0) {
                 this.applyCallback();
@@ -17,12 +17,13 @@ export class LazyDependency {
         }
     }
 
-    public applied() {
+    public applied (): boolean {
         return this.appliedCallback;
     }
 
-    private applyCallback() {
+    private applyCallback (): void {
         this.callback();
         this.appliedCallback = true;
     }
+
 }

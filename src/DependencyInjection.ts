@@ -1,29 +1,26 @@
-'use strict';
-
-import  {
+import {
     ServicesList,
     ServiceDescriptionItem,
     ServicesCreatingList,
-}  from './Lists';
+} from './Lists';
 
 import {ServiceNotFoundException} from './Exceptions';
 
-import  {ExternalDependencies}  from './ExternalDependencies';
+import {ExternalDependencies} from './ExternalDependencies';
 import {LazyDependencies} from './Dependencies/LazyDependencies';
 import {ExternalDependencyNameVO, ServiceNameDescriptionVO} from './VOs';
 import {ServiceDescriptionsHandler} from './ServiceDescriptionsHandler';
 
-
-
-export class  DependencyInjection extends ServiceDescriptionsHandler{
-
+export class DependencyInjection extends ServiceDescriptionsHandler {
 
     private servicesList: ServicesList;
     private servicesCreatingList: ServicesCreatingList;
 
     private lazyDependencies: LazyDependencies;
 
-    public constructor (private externalDependencies: ExternalDependencies = new ExternalDependencies()) {
+    public constructor (
+        private externalDependencies: ExternalDependencies = new ExternalDependencies()
+    ) {
         super();
 
         this.servicesList = new ServicesList();
@@ -41,8 +38,7 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
      */
     public get (name: string): any {
         return this.getService(name);
-    };
-
+    }
 
     /**
      * Register external dependencies in the service dependence injection
@@ -50,9 +46,9 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
      * @param {any} service The object|string|array|any thing we want register as a service.
      * @returns {void}
      */
-    public registerServiceBuilded <T>(name: string, service: T): void {
+    public registerServiceBuilded<T> (name: string, service: T): void {
         this.servicesList.addExternalDependency(new ExternalDependencyNameVO(name), service);
-    };
+    }
 
     /**
      * this method initialize all the services to call without instantiate.
@@ -60,7 +56,7 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
      */
     public callAllServicesWithAutoInit (): void {
         this.servicesToCall.callAllServicesWithAutoInit(this);
-    };
+    }
 
     /**
      * Return the list of services in that moment
@@ -68,29 +64,31 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
      */
     public getServicesList (): Array<string> {
         return this.servicesList.convertToListOfNames();
-    };
+    }
 
     private getServiceBuilded (serviceName: string): any {
         return this.servicesList.find(serviceName).getService();
-    };
+    }
 
     protected getServiceDescription (serviceName: string): ServiceDescriptionItem {
         return this.serviceDescriptions.find(new ServiceNameDescriptionVO(serviceName));
-    };
+    }
 
-    private requireService (args: any, serviceCode: any) {
+    private requireService (args: any, serviceCode: any): object {
         const serviceInstance = new serviceCode(...args);
         return serviceInstance;
-    };
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private buildService (serviceName: string): any {
         this.servicesCreatingList.add(serviceName);
-        const serviceDescription: ServiceDescriptionItem = this.getServiceDescription(serviceName);
+
+        const serviceDescription: ServiceDescriptionItem =
+            this.getServiceDescription(serviceName);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let args: Array<any> = this.decideWhenCreateDependencies(serviceDescription);
-        let service = this.requireService(args, serviceDescription.getServiceFunc());
+        const args: Array<any> = this.decideWhenCreateDependencies(serviceDescription);
+        const service = this.requireService(args, serviceDescription.getServiceFunc());
 
         // Add to the list services builder (cache)
         this.servicesList.add(new ServiceNameDescriptionVO(serviceName), service);
@@ -98,9 +96,9 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
         this.servicesCreatingList.remove(serviceName);
 
         return service;
-    };
+    }
 
-    private createDependencies(serviceDescription: ServiceDescriptionItem, args: Array<any>) {
+    private createDependencies (serviceDescription: ServiceDescriptionItem, args: Array<any>) {
         const dependencies: Array<string> = serviceDescription.getDependencies();
 
         if (dependencies.length) {
@@ -109,7 +107,7 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
             }
         }
         return args;
-    };
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private getService (serviceName: string): any {
@@ -124,19 +122,21 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
             }
         }
         return service;
-    };
+    }
 
-    private decideWhenCreateDependencies(serviceDescription: ServiceDescriptionItem): Array<any> {
+    private decideWhenCreateDependencies (
+        serviceDescription: ServiceDescriptionItem
+    ): Array<any> {
         const injectDependencies: any = serviceDescription.getInjectDependencies();
         let args: Array<any> = [];
 
-        //if we have a injectDependencies function in the service description.
+        // if we have a injectDependencies function in the service description.
         if (typeof injectDependencies === 'function') {
-            const dependenciesToCheck: Array<string> = serviceDescription.getDependencies(),
-            serviceName = serviceDescription.getServiceName();
+            const dependenciesToCheck: Array<string> = serviceDescription.getDependencies();
+            const serviceName = serviceDescription.getServiceName();
             dependenciesToCheck.push(serviceName);
 
-            this.lazyDependencies.addDependencies(dependenciesToCheck, ()=> {
+            this.lazyDependencies.addDependencies(dependenciesToCheck, () => {
                 const dependencies = this.createDependencies(serviceDescription, args);
                 injectDependencies.apply(this.get(serviceName), dependencies);
             });
@@ -148,4 +148,4 @@ export class  DependencyInjection extends ServiceDescriptionsHandler{
         return args;
     }
 
-};
+}

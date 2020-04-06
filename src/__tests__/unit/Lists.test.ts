@@ -2,54 +2,55 @@ import chai = require('chai');
 
 import {ServicesList, ServicesCreatingList} from '../../Lists';
 import {ServiceNameDescriptionVO} from '../../VOs';
-import {IObserver} from '../../Events';
+import {ObserverInterface} from '../../Events';
 
-class FakeObserver implements IObserver {
-    private eventName: string = '';
+class FakeObserver implements ObserverInterface {
 
-    notify(eventName: string): void {
+    private eventName = '';
+
+    notify (eventName: string): void {
         this.eventName = eventName;
     }
 
-    getNotify(): string {
+    getNotify (): string {
         return this.eventName;
     }
-}
 
+}
 
 describe('Lists classes tests', function () {
 
-    function getClassServicesList() {
+    function getClassServicesList (): ServicesList {
         return new ServicesList();
-    };
-
+    }
 
     it('Should find element in ServicesCreatingList', function () {
-        const servicesCreatingList = new ServicesCreatingList(),
-            serviceName = 'foo';
+        const servicesCreatingList = new ServicesCreatingList();
+        const serviceName = 'foo';
 
         servicesCreatingList.add(serviceName);
 
         chai.assert.deepEqual(serviceName, servicesCreatingList.find(serviceName));
     });
 
+    it(
+        'Should add two times a service name into ServicesCreatingList and still getting it.',
+        function () {
+            const servicesCreatingList = new ServicesCreatingList();
+            const serviceName = 'foo';
 
-    it('Should add two times a service name into ServicesCreatingList and still getting it.', function () {
-        const servicesCreatingList = new ServicesCreatingList(),
-            serviceName = 'foo';
+            servicesCreatingList.add(serviceName);
+            servicesCreatingList.add(serviceName);
 
-        servicesCreatingList.add(serviceName);
-        servicesCreatingList.add(serviceName);
-
-        chai.assert.deepEqual(serviceName, servicesCreatingList.find(serviceName));
-    });
-
+            chai.assert.deepEqual(serviceName, servicesCreatingList.find(serviceName));
+        }
+    );
 
     it('Should attach and detach event in ServicesCreatingList', function () {
-        const servicesCreatingList = new ServicesCreatingList(),
-            serviceName1 = 'foo',
-            serviceName2 = 'foo2',
-            fakeObserver: FakeObserver = new FakeObserver();
+        const servicesCreatingList = new ServicesCreatingList();
+        const serviceName1 = 'foo';
+        const serviceName2 = 'foo2';
+        const fakeObserver: FakeObserver = new FakeObserver();
 
         servicesCreatingList.attach(fakeObserver);
         servicesCreatingList.add(serviceName1);
@@ -59,24 +60,18 @@ describe('Lists classes tests', function () {
         chai.assert.deepEqual('ADD:' + serviceName1, fakeObserver.getNotify());
     });
 
-
     it('Should not find element in list servicesList', function () {
-        const servicesList = getClassServicesList(),
-            serviceName = 'foo';
+        const servicesList = getClassServicesList();
+        const serviceName = 'foo';
 
         chai.assert.throws(function () {
             servicesList.find(serviceName);
-        }, 'Service with name '
-        ' + serviceName + '
-        ' not found.'
-    )
-        ;
+        }, 'Service with name \'' + serviceName + '\' not found.');
     });
 
-
     it('Should add two services with same name in list servicesList', function () {
-        const servicesList = getClassServicesList(),
-            serviceName = 'foo';
+        const servicesList = getClassServicesList();
+        const serviceName = 'foo';
 
         servicesList.add(new ServiceNameDescriptionVO(serviceName), 'foo');
 

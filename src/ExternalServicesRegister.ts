@@ -1,26 +1,37 @@
-
 import {ServiceDescriptionsHandler} from './ServiceDescriptionsHandler';
 import {ServiceDescriptionItem} from './Lists';
 
-export class ExternalServicesRegister extends ServiceDescriptionsHandler{
+export class ExternalServicesRegister extends ServiceDescriptionsHandler {
 
-    constructor() {
+    constructor () {
         super();
     }
 
-    public addOwnServicesDescriptionToOtherServiceRegister(container: ServiceDescriptionsHandler): void {
-        this.serviceDescriptions.getList().forEach((serviceDescription: ServiceDescriptionItem) => {
-            const serviceName: string = serviceDescription.getServiceName(),
-                autoInit: boolean = this.servicesToCall.exist(serviceName),
-                serviceFunc: object = serviceDescription.getServiceFunc(),
-                dependencies: Array<string> = serviceDescription.getDependencies(),
-                injectDependencies: object | undefined = serviceDescription.getInjectDependencies();
+    public addOwnServicesDescriptionToOtherServiceRegister (
+        container: ServiceDescriptionsHandler
+    ): void {
+        this.serviceDescriptions.getList().forEach(
+            (serviceDescription: ServiceDescriptionItem) => {
+                const sd: ServiceDescriptionItem = serviceDescription;
+                const serviceName: string = sd.getServiceName();
+                const autoInit: boolean = this.servicesToCall.exist(serviceName);
+                const serviceFunc: object = sd.getServiceFunc();
+                const dependencies: Array<string> = sd.getDependencies();
+                const injectDependencies: object | undefined = sd.getInjectDependencies();
 
-            container.registerService(serviceName, dependencies, serviceFunc, autoInit, injectDependencies);
-        });
+                container.registerService(
+                    serviceName,
+                    dependencies,
+                    serviceFunc,
+                    autoInit,
+                    injectDependencies
+                );
+            }
+        );
 
-        //empty lists
+        // empty lists
         this.serviceDescriptions.restartList();
         this.servicesToCall.restartList();
     }
+
 }

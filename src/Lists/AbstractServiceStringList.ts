@@ -2,23 +2,23 @@ import {ServiceNotFoundException} from '../Exceptions';
 import {EventEmitter} from '../Events';
 import {ActionListEnumType} from './ActionListEnumType';
 
+export abstract class AbstractServiceStringList extends EventEmitter {
 
-export abstract class AbstractServiceStringList extends EventEmitter{
     protected list: Array<string> = [];
 
-    protected constructor() {
+    protected constructor () {
         super();
         this.restartList();
     }
 
-    public add(serviceName: string): void {
+    public add (serviceName: string): void {
         if (!this.exist(serviceName)) {
             this.list.push(serviceName);
             this.sendNotification(ActionListEnumType.Add, serviceName);
         }
     }
 
-    public find(serviceName: string): string {
+    public find (serviceName: string): string {
         const serviceNameFound: string | undefined = this.list.find((serviceItem: string) => {
             return serviceItem === serviceName;
         });
@@ -29,8 +29,8 @@ export abstract class AbstractServiceStringList extends EventEmitter{
         return serviceNameFound;
     }
 
-    public exist(serviceName: string): boolean {
-        let exist: boolean = true;
+    public exist (serviceName: string): boolean {
+        let exist = true;
         try {
             this.find(serviceName);
         } catch (e) {
@@ -39,20 +39,20 @@ export abstract class AbstractServiceStringList extends EventEmitter{
         return exist;
     }
 
-    public getList(): Array<string> {
+    public getList (): Array<string> {
         return this.list;
     }
 
-    public remove(serviceName: string): void {
+    public remove (serviceName: string): void {
         this.list.splice(this.list.indexOf(serviceName), 1);
         this.sendNotification(ActionListEnumType.Remove, serviceName);
     }
 
-    public restartList(): void {
+    public restartList (): void {
         this.list = [];
     }
 
-    private sendNotification(action: string, serviceName: string) {
+    private sendNotification (action: string, serviceName: string): void {
         this.notify(action + ':' + serviceName);
     }
 

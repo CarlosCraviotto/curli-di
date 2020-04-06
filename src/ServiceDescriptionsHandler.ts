@@ -2,13 +2,12 @@ import {ServiceNameDescriptionVO} from './VOs';
 import {ServicesDescriptionList, ServicesToCallList} from './Lists';
 import {ExternalServicesRegister} from './ExternalServicesRegister';
 
-
 export class ServiceDescriptionsHandler {
 
     protected readonly serviceDescriptions: ServicesDescriptionList;
     protected readonly servicesToCall: ServicesToCallList;
 
-    constructor() {
+    constructor () {
         this.serviceDescriptions = new ServicesDescriptionList();
         this.servicesToCall = new ServicesToCallList();
     }
@@ -22,23 +21,37 @@ export class ServiceDescriptionsHandler {
      * @param {method} injectDependencies Function to inject all the dependencies
      * @returns {void}
      */
-    public registerService <T extends {}>(serviceName: string, dependencies: Array<string>, serviceFunc: T, autoInit?: boolean, injectDependencies?: object): void {
-        this.serviceDescriptions.add(new ServiceNameDescriptionVO(serviceName), dependencies, serviceFunc, injectDependencies);
+    public registerService<T extends {}> (
+        serviceName: string,
+        dependencies: Array<string>,
+        serviceFunc: T,
+        autoInit?: boolean,
+        injectDependencies?: object
+    ): void {
+        this.serviceDescriptions.add(
+            new ServiceNameDescriptionVO(serviceName),
+            dependencies,
+            serviceFunc,
+            injectDependencies
+        );
 
         if (autoInit) {
             this.servicesToCall.add(serviceName);
         }
-    };
+    }
 
     public removeRegisteredServiceDescriptions (serviceName: string): void {
         this.serviceDescriptions.remove(new ServiceNameDescriptionVO(serviceName));
-    };
+    }
 
-    public editRegisteredServiceDescriptions (serviceName: string, callback: any): void {
+    public editRegisteredServiceDescriptions <T> (serviceName: string, callback: T): void {
         this.serviceDescriptions.edit(new ServiceNameDescriptionVO(serviceName), callback);
-    };
+    }
 
-    public registerExternalServicesRegister(externalServicesRegister: ExternalServicesRegister) {
+    public registerExternalServicesRegister (
+        externalServicesRegister: ExternalServicesRegister
+    ): void {
         externalServicesRegister.addOwnServicesDescriptionToOtherServiceRegister(this);
     }
+
 }
