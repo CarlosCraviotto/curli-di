@@ -1,6 +1,6 @@
 {
   "name": "curli-di",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Lightweight dependency injection container for JavaScript/TypeScript without using decorators",
   "main": "index",
   "scripts": {
