@@ -41,9 +41,7 @@
     "url": "https://github.com/CarlosCraviotto/curli-di/issues"
   },
   "homepage": "https://github.com/CarlosCraviotto/curli-di#readme",
-  "dependencies": {
-    "tslib": "^1.9.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^24.0.21",
     "@types/node": "^8.10.16",
@@ -55,7 +53,6 @@
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
     "nyc": "15.0.0",
-    "husky": "^3.0.0",
     "coveralls": "3.0.11",
     "rimraf": "^3.0.0",
     "mocha": "^7.1.1",
