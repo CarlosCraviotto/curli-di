@@ -75,6 +75,43 @@ const dataBaseUser: string = container.get("@dataBaseUser");
 
  ```
 
+### Registering external dependencies/properties with an object in bulk mode:
+
+```typescript
+import {DependencyInjection, ExternalDependencies} from "curli-di";
+import {Database} from "database";
+import {Oauth} from "oauth";
+import {Lang} from "lang";
+
+class Foo {
+  constructor(private database: Database) {}
+}
+
+// Register previous dependencies already instantiated
+const externalDependencies = new ExternalDependencies();
+externalDependencies.bulk({
+    "dataBaseUser": "root",
+    "dataBasePass": "",
+    "useOauth": false,
+    "languagesSupported": ['en-GB','es-MX', 'zh-HK']
+});
+
+const container = new DependencyInjection(externalDependencies);
+
+//register the dependencies for the class
+container.registerService("dataBase", ["@dataBaseUser", "@dataBasePass"], Database);
+container.registerService("foo", ["dataBase"], Foo);
+container.registerService("lang", ["@languagesSupported"], Lang);
+container.registerService("oauth", [], Oauth);
+
+if (container.get("@useOauth")) {
+    container.get("oauth").start();
+}
+
+//creating the service
+const foo = container.get("foo");
+
+```
 
 ### Circular dependency:
 
@@ -132,5 +169,29 @@ container.registerExternalServiceRegister(externalServicesRegister);
 
 //creating the service
 const foo = container.get("foo");
+
+```
+
+
+### Instantiate one or more services in a specific moment (like when we start the app) using autoInit option:
+
+```typescript
+import {DependencyInjection} from "curli-di";
+import {Database} from "database";
+import {Oauth} from "oauth";
+import {Lang} from "lang";
+import {Foo} from "foo";
+
+const container = new DependencyInjection();
+
+//register the dependencies for the class
+container.registerService("dataBase", [], Database, true);
+container.registerService("foo", [], Foo);
+container.registerService("lang", [], Lang);
+container.registerService("oauth", [], Oauth, true);
+
+
+//start dataBase service and oauth
+container.callAllServicesWithAutoInit();
 
 ```
