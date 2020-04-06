@@ -1,8 +1,11 @@
 import {
-    ServicesList,
-    ServiceDescriptionItem,
-    ServicesCreatingList,
-} from './Lists';
+    ServicesCollection,
+    ServicesCreatingCollection,
+} from './Collections';
+
+import {
+    ServiceDescriptionModel
+} from './Models';
 
 import {ServiceNotFoundException} from './Exceptions';
 
@@ -13,8 +16,8 @@ import {ServiceDescriptionsHandler} from './ServiceDescriptionsHandler';
 
 export class DependencyInjection extends ServiceDescriptionsHandler {
 
-    private servicesList: ServicesList;
-    private servicesCreatingList: ServicesCreatingList;
+    private servicesCollection: ServicesCollection;
+    private servicesCreatingCollection: ServicesCreatingCollection;
 
     private lazyDependencies: LazyDependencies;
 
@@ -23,12 +26,12 @@ export class DependencyInjection extends ServiceDescriptionsHandler {
     ) {
         super();
 
-        this.servicesList = new ServicesList();
-        this.servicesCreatingList = new ServicesCreatingList();
-        this.lazyDependencies = new LazyDependencies(this.servicesCreatingList);
+        this.servicesCollection = new ServicesCollection();
+        this.servicesCreatingCollection = new ServicesCreatingCollection();
+        this.lazyDependencies = new LazyDependencies(this.servicesCreatingCollection);
 
-        this.servicesList = this.externalDependencies.transferToList(this.servicesList);
-        this.servicesList.add(new ServiceNameDescriptionVO('container'), this);
+        this.servicesCollection = this.externalDependencies.transferToCollection(this.servicesCollection);
+        this.servicesCollection.add(new ServiceNameDescriptionVO('container'), this);
     }
 
     /**
@@ -47,7 +50,7 @@ export class DependencyInjection extends ServiceDescriptionsHandler {
      * @returns {void}
      */
     public registerServiceBuilded<T> (name: string, service: T): void {
-        this.servicesList.addExternalDependency(new ExternalDependencyNameVO(name), service);
+        this.servicesCollection.addExternalDependency(new ExternalDependencyNameVO(name), service);
     }
 
     /**
@@ -59,18 +62,18 @@ export class DependencyInjection extends ServiceDescriptionsHandler {
     }
 
     /**
-     * Return the list of services in that moment
-     * @returns {array} The list of services.
+     * Return the Collection of services in that moment
+     * @returns {array} The Collection of services.
      */
-    public getServicesList (): Array<string> {
-        return this.servicesList.convertToListOfNames();
+    public getServicesCollection (): Array<string> {
+        return this.servicesCollection.convertToCollectionOfNames();
     }
 
     private getServiceBuilded (serviceName: string): any {
-        return this.servicesList.find(serviceName).getService();
+        return this.servicesCollection.find(serviceName).getService();
     }
 
-    protected getServiceDescription (serviceName: string): ServiceDescriptionItem {
+    protected getServiceDescription (serviceName: string): ServiceDescriptionModel {
         return this.serviceDescriptions.find(new ServiceNameDescriptionVO(serviceName));
     }
 
@@ -81,24 +84,24 @@ export class DependencyInjection extends ServiceDescriptionsHandler {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private buildService (serviceName: string): any {
-        this.servicesCreatingList.add(serviceName);
+        this.servicesCreatingCollection.add(serviceName);
 
-        const serviceDescription: ServiceDescriptionItem =
+        const serviceDescription: ServiceDescriptionModel =
             this.getServiceDescription(serviceName);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const args: Array<any> = this.decideWhenCreateDependencies(serviceDescription);
         const service = this.requireService(args, serviceDescription.getServiceFunc());
 
-        // Add to the list services builder (cache)
-        this.servicesList.add(new ServiceNameDescriptionVO(serviceName), service);
+        // Add to the Collection services builder (cache)
+        this.servicesCollection.add(new ServiceNameDescriptionVO(serviceName), service);
 
-        this.servicesCreatingList.remove(serviceName);
+        this.servicesCreatingCollection.remove(serviceName);
 
         return service;
     }
 
-    private createDependencies (serviceDescription: ServiceDescriptionItem, args: Array<any>) {
+    private createDependencies (serviceDescription: ServiceDescriptionModel, args: Array<any>) {
         const dependencies: Array<string> = serviceDescription.getDependencies();
 
         if (dependencies.length) {
@@ -125,7 +128,7 @@ export class DependencyInjection extends ServiceDescriptionsHandler {
     }
 
     private decideWhenCreateDependencies (
-        serviceDescription: ServiceDescriptionItem
+        serviceDescription: ServiceDescriptionModel
     ): Array<any> {
         const injectDependencies: any = serviceDescription.getInjectDependencies();
         let args: Array<any> = [];

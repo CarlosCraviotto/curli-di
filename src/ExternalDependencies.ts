@@ -1,10 +1,10 @@
 
-import {ServicesList} from './Lists/ServicesList';
+import {ServicesCollection} from './Collections';
 import {ExternalDependencyNameVO} from './VOs';
 
 export class ExternalDependencies {
 
-    protected dependencies: ServicesList = new ServicesList();
+    protected dependencies: ServicesCollection = new ServicesCollection();
 
     public add <T> (name: string, service: T): void {
         this.dependencies.addExternalDependency(new ExternalDependencyNameVO(name), service);
@@ -16,9 +16,9 @@ export class ExternalDependencies {
         }
     }
 
-    public transferToList (servicesList: ServicesList): ServicesList {
-        servicesList.combine(this.dependencies);
-        return servicesList;
+    public transferToCollection (servicesCollection: ServicesCollection): ServicesCollection {
+        servicesCollection.combine(this.dependencies);
+        return servicesCollection;
     }
 
 }

@@ -1,34 +1,34 @@
 import {ObserverInterface} from '../Events';
 import {LazyDependency} from './LazyDependency';
-import {ActionListEnumType} from '../Lists/ActionListEnumType';
-import {ServicesCreatingList} from '../Lists';
+import {ActionCollectionEnumType} from '../Types';
+import {ServicesCreatingCollection} from '../Collections';
 
 export class LazyDependencies implements ObserverInterface {
 
-    private lazyDependenciesList: Array<LazyDependency>;
+    private lazyDependenciesCollection: Array<LazyDependency>;
 
-    public constructor (private servicesCreatingList: ServicesCreatingList) {
-        this.servicesCreatingList.attach(this);
-        this.lazyDependenciesList = [];
+    public constructor (private servicesCreatingCollection: ServicesCreatingCollection) {
+        this.servicesCreatingCollection.attach(this);
+        this.lazyDependenciesCollection = [];
     }
 
     public notify (eventName: string): void {
         const eventCut: Array<string> = this.cutEvent(eventName);
 
-        if (eventCut[0] === ActionListEnumType.Remove) {
+        if (eventCut[0] === ActionCollectionEnumType.Remove) {
             this.applyDoneDependency(eventCut[1]);
         }
     }
 
     public addDependencies (dependenciesToCheck: Array<string>, callback: any): void {
-        dependenciesToCheck = this.cleanDependenciesToCheckList(dependenciesToCheck);
-        this.lazyDependenciesList.push(new LazyDependency(dependenciesToCheck, callback));
+        dependenciesToCheck = this.cleanDependenciesToCheckCollection(dependenciesToCheck);
+        this.lazyDependenciesCollection.push(new LazyDependency(dependenciesToCheck, callback));
     }
 
-    private cleanDependenciesToCheckList (dependenciesToCheck: Array<string>): Array<string> {
+    private cleanDependenciesToCheckCollection (dependenciesToCheck: Array<string>): Array<string> {
         const cleanDependenciesAlreadyBenCreating: Array<string> = [];
 
-        this.servicesCreatingList.getList().forEach((dependency: string) => {
+        this.servicesCreatingCollection.getCollection().forEach((dependency: string) => {
             if (dependenciesToCheck.indexOf(dependency) !== -1) {
                 cleanDependenciesAlreadyBenCreating.push(dependency);
             }
@@ -42,11 +42,11 @@ export class LazyDependencies implements ObserverInterface {
     }
 
     private applyDoneDependency (dependency: string): void {
-        this.lazyDependenciesList.forEach((lazyDependency: LazyDependency, index: number) => {
+        this.lazyDependenciesCollection.forEach((lazyDependency: LazyDependency, index: number) => {
             lazyDependency.dependencyHasBenBuilt(dependency);
 
             if (lazyDependency.applied()) {
-                delete this.lazyDependenciesList[index];
+                delete this.lazyDependenciesCollection[index];
             }
         });
     }

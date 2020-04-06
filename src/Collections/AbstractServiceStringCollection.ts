@@ -1,26 +1,26 @@
 import {ServiceNotFoundException} from '../Exceptions';
 import {EventEmitter} from '../Events';
-import {ActionListEnumType} from './ActionListEnumType';
+import {ActionCollectionEnumType} from '../Types/ActionCollectionEnumType';
 
-export abstract class AbstractServiceStringList extends EventEmitter {
+export abstract class AbstractServiceStringCollection extends EventEmitter {
 
-    protected list: Array<string> = [];
+    protected collection: Array<string> = [];
 
     protected constructor () {
         super();
-        this.restartList();
+        this.restartCollection();
     }
 
     public add (serviceName: string): void {
         if (!this.exist(serviceName)) {
-            this.list.push(serviceName);
-            this.sendNotification(ActionListEnumType.Add, serviceName);
+            this.collection.push(serviceName);
+            this.sendNotification(ActionCollectionEnumType.Add, serviceName);
         }
     }
 
     public find (serviceName: string): string {
-        const serviceNameFound: string | undefined = this.list.find((serviceItem: string) => {
-            return serviceItem === serviceName;
+        const serviceNameFound: string | undefined = this.collection.find((serviceModel: string) => {
+            return serviceModel === serviceName;
         });
 
         if (!serviceNameFound) {
@@ -39,17 +39,17 @@ export abstract class AbstractServiceStringList extends EventEmitter {
         return exist;
     }
 
-    public getList (): Array<string> {
-        return this.list;
+    public getCollection (): Array<string> {
+        return this.collection;
     }
 
     public remove (serviceName: string): void {
-        this.list.splice(this.list.indexOf(serviceName), 1);
-        this.sendNotification(ActionListEnumType.Remove, serviceName);
+        this.collection.splice(this.collection.indexOf(serviceName), 1);
+        this.sendNotification(ActionCollectionEnumType.Remove, serviceName);
     }
 
-    public restartList (): void {
-        this.list = [];
+    public restartCollection (): void {
+        this.collection = [];
     }
 
     private sendNotification (action: string, serviceName: string): void {

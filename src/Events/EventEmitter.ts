@@ -2,23 +2,23 @@ import {ObserverInterface} from './ObserverInterface';
 
 export abstract class EventEmitter {
 
-    protected observersList: Array<ObserverInterface>;
+    protected observersCollection: Array<ObserverInterface>;
 
     protected constructor () {
-        this.observersList = [];
+        this.observersCollection = [];
     }
 
     public attach (observer: ObserverInterface): void {
-        this.observersList.push(observer);
+        this.observersCollection.push(observer);
     }
 
     public detach (observer: ObserverInterface): void {
-        this.observersList.splice(this.observersList.indexOf(observer), 1);
+        this.observersCollection.splice(this.observersCollection.indexOf(observer), 1);
     }
 
     // Notify all observers about an event.
     protected notify (eventName: string): void {
-        this.observersList.forEach((observer: ObserverInterface) => {
+        this.observersCollection.forEach((observer: ObserverInterface) => {
             observer.notify(eventName);
         });
     }

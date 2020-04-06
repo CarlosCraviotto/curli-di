@@ -1,7 +1,7 @@
 import chai = require('chai');
 
 import {DependencyInjection, ExternalDependencies} from '../..';
-import {ServiceDescriptionItem} from '../../Lists';
+import {ServiceDescriptionModel} from '../../Models';
 import {ExternalServicesRegister} from '../../ExternalServicesRegister';
 
 class NewService {
@@ -102,7 +102,7 @@ describe('DependencyInjection service', function () {
 
         dependencyInjection.editRegisteredServiceDescriptions(
             serviceName2,
-            (serviceDescription: ServiceDescriptionItem) => {
+            (serviceDescription: ServiceDescriptionModel) => {
                 serviceDescription.setDependencies([serviceName]);
             }
         );
@@ -272,7 +272,7 @@ describe('DependencyInjection service', function () {
         );
     });
 
-    it('Should return a list of names of services already called', function () {
+    it('Should return a Collection of names of services already called', function () {
         const dependencyInjection = getClass();
 
         dependencyInjection.registerService('newService', [], NewService);
@@ -280,10 +280,10 @@ describe('DependencyInjection service', function () {
 
         dependencyInjection.get('newService');
 
-        const list1 = ['container', 'newService'];
-        const list2 = dependencyInjection.getServicesList();
+        const collection1 = ['container', 'newService'];
+        const collection2 = dependencyInjection.getServicesCollection();
 
-        chai.assert.deepEqual(list1, list2);
+        chai.assert.deepEqual(collection1, collection2);
     });
 
     it('Should register classes using external register', function () {
@@ -297,10 +297,10 @@ describe('DependencyInjection service', function () {
 
         dependencyInjection.get('newService');
 
-        const list1 = ['container', 'newService'];
-        const list2 = dependencyInjection.getServicesList();
+        const collection1 = ['container', 'newService'];
+        const collection2 = dependencyInjection.getServicesCollection();
 
-        chai.assert.deepEqual(list1, list2);
+        chai.assert.deepEqual(collection1, collection2);
     });
 
     it('Should register classes using two external registers', function () {
@@ -317,10 +317,10 @@ describe('DependencyInjection service', function () {
         dependencyInjection.get('newService');
         dependencyInjection.get('newToInject');
 
-        const list1 = ['container', 'newService', 'newToInject'];
-        const list2 = dependencyInjection.getServicesList();
+        const collection1 = ['container', 'newService', 'newToInject'];
+        const collection2 = dependencyInjection.getServicesCollection();
 
-        chai.assert.deepEqual(list1, list2);
+        chai.assert.deepEqual(collection1, collection2);
     });
 
     it(

@@ -1,4 +1,4 @@
-export class ServiceItem {
+export class ServiceModel {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor (protected name: string, protected service: any) {

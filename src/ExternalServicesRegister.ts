@@ -1,5 +1,5 @@
 import {ServiceDescriptionsHandler} from './ServiceDescriptionsHandler';
-import {ServiceDescriptionItem} from './Lists';
+import {ServiceDescriptionModel} from './Models';
 
 export class ExternalServicesRegister extends ServiceDescriptionsHandler {
 
@@ -10,9 +10,9 @@ export class ExternalServicesRegister extends ServiceDescriptionsHandler {
     public addOwnServicesDescriptionToOtherServiceRegister (
         container: ServiceDescriptionsHandler
     ): void {
-        this.serviceDescriptions.getList().forEach(
-            (serviceDescription: ServiceDescriptionItem) => {
-                const sd: ServiceDescriptionItem = serviceDescription;
+        this.serviceDescriptions.getCollection().forEach(
+            (serviceDescription: ServiceDescriptionModel) => {
+                const sd: ServiceDescriptionModel = serviceDescription;
                 const serviceName: string = sd.getServiceName();
                 const autoInit: boolean = this.servicesToCall.exist(serviceName);
                 const serviceFunc: object = sd.getServiceFunc();
@@ -29,9 +29,9 @@ export class ExternalServicesRegister extends ServiceDescriptionsHandler {
             }
         );
 
-        // empty lists
-        this.serviceDescriptions.restartList();
-        this.servicesToCall.restartList();
+        // empty Collections
+        this.serviceDescriptions.restartCollection();
+        this.servicesToCall.restartCollection();
     }
 
 }

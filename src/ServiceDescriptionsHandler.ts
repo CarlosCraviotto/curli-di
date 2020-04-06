@@ -1,15 +1,15 @@
 import {ServiceNameDescriptionVO} from './VOs';
-import {ServicesDescriptionList, ServicesToCallList} from './Lists';
+import {ServicesDescriptionCollection, ServicesToCallCollection} from './Collections';
 import {ExternalServicesRegister} from './ExternalServicesRegister';
 
 export class ServiceDescriptionsHandler {
 
-    protected readonly serviceDescriptions: ServicesDescriptionList;
-    protected readonly servicesToCall: ServicesToCallList;
+    protected readonly serviceDescriptions: ServicesDescriptionCollection;
+    protected readonly servicesToCall: ServicesToCallCollection;
 
     constructor () {
-        this.serviceDescriptions = new ServicesDescriptionList();
-        this.servicesToCall = new ServicesToCallList();
+        this.serviceDescriptions = new ServicesDescriptionCollection();
+        this.servicesToCall = new ServicesToCallCollection();
     }
 
     /**

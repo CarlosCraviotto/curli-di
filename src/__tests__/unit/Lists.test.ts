@@ -1,6 +1,6 @@
 import chai = require('chai');
 
-import {ServicesList, ServicesCreatingList} from '../../Lists';
+import {ServicesCollection, ServicesCreatingCollection} from '../../Collections';
 import {ServiceNameDescriptionVO} from '../../VOs';
 import {ObserverInterface} from '../../Events';
 
@@ -18,65 +18,65 @@ class FakeObserver implements ObserverInterface {
 
 }
 
-describe('Lists classes tests', function () {
+describe('Collections classes tests', function () {
 
-    function getClassServicesList (): ServicesList {
-        return new ServicesList();
+    function getClassServicesCollection (): ServicesCollection {
+        return new ServicesCollection();
     }
 
-    it('Should find element in ServicesCreatingList', function () {
-        const servicesCreatingList = new ServicesCreatingList();
+    it('Should find element in ServicesCreatingCollection', function () {
+        const servicesCreatingCollection = new ServicesCreatingCollection();
         const serviceName = 'foo';
 
-        servicesCreatingList.add(serviceName);
+        servicesCreatingCollection.add(serviceName);
 
-        chai.assert.deepEqual(serviceName, servicesCreatingList.find(serviceName));
+        chai.assert.deepEqual(serviceName, servicesCreatingCollection.find(serviceName));
     });
 
     it(
-        'Should add two times a service name into ServicesCreatingList and still getting it.',
+        'Should add two times a service name into ServicesCreatingCollection and still getting it.',
         function () {
-            const servicesCreatingList = new ServicesCreatingList();
+            const servicesCreatingCollection = new ServicesCreatingCollection();
             const serviceName = 'foo';
 
-            servicesCreatingList.add(serviceName);
-            servicesCreatingList.add(serviceName);
+            servicesCreatingCollection.add(serviceName);
+            servicesCreatingCollection.add(serviceName);
 
-            chai.assert.deepEqual(serviceName, servicesCreatingList.find(serviceName));
+            chai.assert.deepEqual(serviceName, servicesCreatingCollection.find(serviceName));
         }
     );
 
-    it('Should attach and detach event in ServicesCreatingList', function () {
-        const servicesCreatingList = new ServicesCreatingList();
+    it('Should attach and detach event in ServicesCreatingCollection', function () {
+        const servicesCreatingCollection = new ServicesCreatingCollection();
         const serviceName1 = 'foo';
         const serviceName2 = 'foo2';
         const fakeObserver: FakeObserver = new FakeObserver();
 
-        servicesCreatingList.attach(fakeObserver);
-        servicesCreatingList.add(serviceName1);
-        servicesCreatingList.detach(fakeObserver);
-        servicesCreatingList.add(serviceName2);
+        servicesCreatingCollection.attach(fakeObserver);
+        servicesCreatingCollection.add(serviceName1);
+        servicesCreatingCollection.detach(fakeObserver);
+        servicesCreatingCollection.add(serviceName2);
 
         chai.assert.deepEqual('ADD:' + serviceName1, fakeObserver.getNotify());
     });
 
-    it('Should not find element in list servicesList', function () {
-        const servicesList = getClassServicesList();
+    it('Should not find element in Collection servicesCollection', function () {
+        const servicesCollection = getClassServicesCollection();
         const serviceName = 'foo';
 
         chai.assert.throws(function () {
-            servicesList.find(serviceName);
+            servicesCollection.find(serviceName);
         }, 'Service with name \'' + serviceName + '\' not found.');
     });
 
-    it('Should add two services with same name in list servicesList', function () {
-        const servicesList = getClassServicesList();
+    it('Should add two services with same name in Collection servicesCollection', function () {
+        const servicesCollection = getClassServicesCollection();
         const serviceName = 'foo';
 
-        servicesList.add(new ServiceNameDescriptionVO(serviceName), 'foo');
+        servicesCollection.add(new ServiceNameDescriptionVO(serviceName), 'foo');
 
         chai.assert.throws(function () {
-            servicesList.add(new ServiceNameDescriptionVO(serviceName), 'foo');
+            servicesCollection.add(new ServiceNameDescriptionVO(serviceName), 'foo');
         }, 'The service with name ' + serviceName + ' already exist.');
     });
 

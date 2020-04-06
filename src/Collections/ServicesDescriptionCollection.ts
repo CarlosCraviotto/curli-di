@@ -1,13 +1,13 @@
-import {ServiceDescriptionItem} from './ServiceDescriptionItem';
+import {ServiceDescriptionModel} from '../Models/ServiceDescriptionModel';
 import {ServiceDescriptionsNotFoundException} from '../Exceptions';
 import {ServiceNameDescriptionVO} from '../VOs';
 
-export class ServicesDescriptionList {
+export class ServicesDescriptionCollection {
 
-    private list: Array<ServiceDescriptionItem>;
+    private collection: Array<ServiceDescriptionModel>;
 
     public constructor () {
-        this.list = [];
+        this.collection = [];
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,8 +22,8 @@ export class ServicesDescriptionList {
             const value = serviceName.getValue();
             throw new Error('The service with name ' + value + ' already registered.');
         } else {
-            this.list.push(
-                new ServiceDescriptionItem(
+            this.collection.push(
+                new ServiceDescriptionModel(
                     serviceName,
                     dependencies,
                     serviceFunc,
@@ -34,12 +34,12 @@ export class ServicesDescriptionList {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public find (serviceName: ServiceNameDescriptionVO): ServiceDescriptionItem {
-        const serviceDescription = this.list.find((serviceItem: ServiceDescriptionItem) => {
-            return serviceItem.isThisService(serviceName);
+    public find (serviceName: ServiceNameDescriptionVO): ServiceDescriptionModel {
+        const serviceDescription = this.collection.find((serviceModel: ServiceDescriptionModel) => {
+            return serviceModel.isThisService(serviceName);
         });
 
-        if (!(serviceDescription instanceof ServiceDescriptionItem)) {
+        if (!(serviceDescription instanceof ServiceDescriptionModel)) {
             throw new ServiceDescriptionsNotFoundException(serviceName.getValue());
         }
 
@@ -61,27 +61,27 @@ export class ServicesDescriptionList {
     }
 
     public remove (serviceName: ServiceNameDescriptionVO): void {
-        this.list.forEach((serviceDescription: ServiceDescriptionItem, index) => {
+        this.collection.forEach((serviceDescription: ServiceDescriptionModel, index) => {
             if (serviceDescription.isThisService(serviceName)) {
-                this.list.splice(index, 1);
+                this.collection.splice(index, 1);
             }
         });
     }
 
     public edit (serviceName: ServiceNameDescriptionVO, callback: any): void {
-        this.list.forEach((serviceDescription: ServiceDescriptionItem) => {
+        this.collection.forEach((serviceDescription: ServiceDescriptionModel) => {
             if (serviceDescription.isThisService(serviceName)) {
                 callback(serviceDescription);
             }
         });
     }
 
-    public getList (): Array<ServiceDescriptionItem> {
-        return this.list;
+    public getCollection (): Array<ServiceDescriptionModel> {
+        return this.collection;
     }
 
-    public restartList (): void {
-        this.list = [];
+    public restartCollection (): void {
+        this.collection = [];
     }
 
 }

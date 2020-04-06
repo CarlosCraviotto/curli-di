@@ -1,7 +1,7 @@
 import {ThisIsNotAConstructorFunctionException} from '../Exceptions';
 import {ServiceNameDescriptionVO} from '../VOs';
 
-export class ServiceDescriptionItem {
+export class ServiceDescriptionModel {
 
     public constructor (
         private serviceName: ServiceNameDescriptionVO,

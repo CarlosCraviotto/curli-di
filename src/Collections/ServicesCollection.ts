@@ -1,13 +1,13 @@
-import {ServiceItem} from './ServiceItem';
+import {ServiceModel} from '../Models/ServiceModel';
 import {ServiceNotFoundException} from '../Exceptions';
 import {ExternalDependencyNameVO, ServiceNameDescriptionVO} from '../VOs';
 
-export class ServicesList {
+export class ServicesCollection {
 
-    private list: Array<ServiceItem>;
+    private collection: Array<ServiceModel>;
 
     public constructor () {
-        this.list = [];
+        this.collection = [];
     }
 
     /**
@@ -32,12 +32,12 @@ export class ServicesList {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public find (name: string): ServiceItem {
-        const service = this.list.find((serviceItem: ServiceItem) => {
-            return serviceItem.isThisService(name);
+    public find (name: string): ServiceModel {
+        const service = this.collection.find((serviceModel: ServiceModel) => {
+            return serviceModel.isThisService(name);
         });
 
-        if (!(service instanceof ServiceItem)) {
+        if (!(service instanceof ServiceModel)) {
             throw new ServiceNotFoundException(name);
         }
 
@@ -58,31 +58,31 @@ export class ServicesList {
         return exist;
     }
 
-    public getList (): Array<ServiceItem> {
-        return this.list;
+    public getCollection (): Array<ServiceModel> {
+        return this.collection;
     }
 
-    public combine (servicesList: ServicesList): ServicesList {
-        const list = servicesList.getList();
-        list.forEach((serviceItem: ServiceItem) => {
-            this.addNewService(serviceItem.getName(), serviceItem.getService());
+    public combine (servicesCollection: ServicesCollection): ServicesCollection {
+        const collection = servicesCollection.getCollection();
+        collection.forEach((serviceModel: ServiceModel) => {
+            this.addNewService(serviceModel.getName(), serviceModel.getService());
         });
         return this;
     }
 
-    public convertToListOfNames (): Array<string> {
-        const list: Array<string> = [];
-        this.list.forEach((serviceItem: ServiceItem) => {
-            list.push(serviceItem.getName());
+    public convertToCollectionOfNames (): Array<string> {
+        const collection: Array<string> = [];
+        this.collection.forEach((serviceModel: ServiceModel) => {
+            collection.push(serviceModel.getName());
         });
-        return list;
+        return collection;
     }
 
     private addNewService <T extends {}> (name: string, service: T): void {
         if (this.exist(name)) {
             throw new Error('The service with name ' + name + ' already exist.');
         } else {
-            this.list.push(new ServiceItem(name, service));
+            this.collection.push(new ServiceModel(name, service));
         }
     }
 

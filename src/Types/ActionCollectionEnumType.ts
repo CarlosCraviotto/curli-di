@@ -1,4 +1,4 @@
-export enum ActionListEnumType {
+export enum ActionCollectionEnumType {
     Remove = 'REMOVE',
     Add = 'ADD'
 }
