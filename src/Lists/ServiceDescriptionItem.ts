@@ -1,9 +1,10 @@
 import {ThisIsNotAConstructorFunctionException} from "../Exceptions";
+import {ServiceNameDescriptionVO} from "../VOs";
 
 export class ServiceDescriptionItem {
 
     public constructor(
-        private serviceName: string,
+        private serviceName: ServiceNameDescriptionVO,
         private dependencies: Array<string>,
         private serviceFunc: object,
         private injectDependencies?: object
@@ -11,8 +12,8 @@ export class ServiceDescriptionItem {
         this.checkIfItIsAConstructorFunction(serviceFunc);
     };
 
-    public isThisService(serviceName: string): boolean {
-        return (this.serviceName === serviceName)? true : false;
+    public isThisService(serviceName: ServiceNameDescriptionVO): boolean {
+        return (this.serviceName.getValue() === serviceName.getValue())? true : false;
     }
 
     public getDependencies (): Array<string> {
@@ -32,7 +33,7 @@ export class ServiceDescriptionItem {
     }
 
     public getServiceName (): string {
-        return this.serviceName;
+        return this.serviceName.getValue();
     }
 
     private checkIfItIsAConstructorFunction (ConstructorFunction: any) {

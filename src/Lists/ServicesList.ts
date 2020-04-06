@@ -1,5 +1,6 @@
 import {ServiceItem} from "./ServiceItem";
 import {ServiceNotFoundException} from "../Exceptions";
+import {ExternalDependencyNameVO, ServiceNameDescriptionVO} from "../VOs";
 
 export class ServicesList {
     private list: Array<ServiceItem>;
@@ -8,14 +9,23 @@ export class ServicesList {
         this.list = [];
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public add (name: string, service: any): void {
+    /**
+     * Add a new service from a service created into the container
+     * @param name
+     * @param service
+     */
+    public add <T extends {}>(name: ServiceNameDescriptionVO, service: T): void {
+        this.addNewService(name.getValue(), service);
+    }
 
-        if (this.exist(name)) {
-            throw new Error("The service with name " + name + " already exist.");
-        } else {
-            this.list.push(new ServiceItem(name, service));
-        }
+
+    /**
+     * Add an external dependency
+     * @param name
+     * @param service
+     */
+    public addExternalDependency <T>(externalDependencyNameVO: ExternalDependencyNameVO, service: T) {
+        this.addNewService(externalDependencyNameVO.getValue(), service);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,7 +62,7 @@ export class ServicesList {
     public combine (servicesList: ServicesList): ServicesList {
         const list = servicesList.getList();
         list.forEach((serviceItem: ServiceItem) => {
-            this.add(serviceItem.getName(), serviceItem.getService());
+            this.addNewService(serviceItem.getName(), serviceItem.getService());
         });
         return this;
     }
@@ -63,5 +73,13 @@ export class ServicesList {
             list.push(serviceItem.getName());
         });
         return list;
+    }
+
+    private addNewService <T extends {}>(name: string, service: T) {
+        if (this.exist(name)) {
+            throw new Error("The service with name " + name + " already exist.");
+        } else {
+            this.list.push(new ServiceItem(name, service));
+        }
     }
 }

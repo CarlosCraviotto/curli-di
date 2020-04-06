@@ -1,6 +1,7 @@
 import chai = require('chai');
 
 import {ServicesList, ServicesCreatingList} from "../../Lists";
+import {ServiceNameDescriptionVO} from "../../VOs";
 import {IObserver} from "../../Events";
 
 class FakeObserver implements IObserver {
@@ -59,7 +60,7 @@ describe('Lists classes tests', function () {
     });
 
 
-    it('Not find element in list servicesList', function () {
+    it('Should not find element in list servicesList', function () {
         const servicesList = getClassServicesList(),
             serviceName = "foo";
 
@@ -69,14 +70,14 @@ describe('Lists classes tests', function () {
     });
 
 
-    it('Add two services with same name in list servicesList', function () {
+    it('Should add two services with same name in list servicesList', function () {
         const servicesList = getClassServicesList(),
             serviceName = "foo";
 
-        servicesList.add(serviceName, 'foo');
+        servicesList.add(new ServiceNameDescriptionVO(serviceName), 'foo');
 
         chai.assert.throws(function () {
-            servicesList.add(serviceName, 'foo');
+            servicesList.add(new ServiceNameDescriptionVO(serviceName), 'foo');
         }, "The service with name " + serviceName + " already exist.");
     });
 
