@@ -6,8 +6,11 @@
 [![npm version](https://badge.fury.io/js/curli-di.svg)](https://badge.fury.io/js/curli-di)
 [![Dependency Status](https://david-dm.org/CarlosCraviotto/curli-di.png)](https://david-dm.org/CarlosCraviotto/curli-di)
 
+
 A Dependency Injection (DI) library in typescript without using decorators.
 
+
+Dependency injection is a software design pattern that implements inversion of control for resolving dependencies. A dependency is an object that can be used (a service). An injection is the passing of a dependency to a dependent object (a client) that would use it.
 
 ## Installation
 
@@ -198,3 +201,16 @@ container.registerService("oauth", [], Oauth, true);
 container.callAllServicesWithAutoInit();
 
 ```
+
+### Commands
+
+ - `npm run build`: Build the project (dependency injection).
+ - `npm run build:clean`: Delete first the dist folder and build it.
+ - `npm run clean`: Delete the dist folder.
+ - `npm run test`: Execute the tests.
+ - `npm run test:coverage`:  Execute the tests and calculate the coverage.
+ - `npm run lint`: Check the code using the rules in .eslintre.js
+ - `npm run lint:fix`: Check the code and try to fix it.
+
+### License
+MIT
