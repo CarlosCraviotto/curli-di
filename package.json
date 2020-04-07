@@ -4,8 +4,8 @@
   "description": "Lightweight dependency injection container for JavaScript/TypeScript without using decorators",
   "main": "index",
   "scripts": {
-    "build": "npm run clean && npm run build:all",
-    "build:all": "tsc",
+    "build:clean": "npm run clean && npm run build",
+    "build": "tsc",
     "clean": "rimraf ./dist",
     "test": "mocha -r ts-node/register src/__tests__/unit/*.test.ts",
     "test:coverage": "nyc -r lcov -e .ts -x \"src/__tests__/unit/*.test.ts\" npm run test",
