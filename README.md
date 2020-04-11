@@ -12,7 +12,10 @@ A Dependency Injection (DI) library in typescript without using decorators.
 
 Dependency injection is a software design pattern that implements inversion of control for resolving dependencies. A dependency is an object that can be used (a service). An injection is the passing of a dependency to a dependent object (a client) that would use it.
 
-## Installation
+### Motivation
+There are a lot of dependency injection libraries for JavaScript/Typescript out there, this is not new.  The one thing we're trying to achieve here is the ability to take advantage of such a library but without coupling it into the application's domain. The main goal here is to create a library that you can use without using third part code into your domains.
+
+### Installation
 
 Install by `npm`
 
@@ -42,7 +45,7 @@ const foo = container.get("foo");
 
 ### Registering external dependencies/properties:
 
-Some time we need to inject properties or other kind of values into our services, for this we use the class ExternalDependencies like here: 
+Sometimes we need to inject properties or other kind of values into our services, in this case we use the class ExternalDependencies as is shown here: 
 
 ```typescript
 import {DependencyInjection, ExternalDependencies} from "curli-di";
@@ -70,7 +73,8 @@ const foo = container.get("foo");
 
 As this example shows, to access to any external dependency or property we need to add the prefix @.
 
-Also to inject or use a external dependency we can use the registerServiceBuilded method in the container after we initialized it:
+Also to inject or use an external dependency we can use the registerServiceBuilded method in the container after we initialized it:
+
   ```typescript
 import {DependencyInjection} from "curli-di";
 
