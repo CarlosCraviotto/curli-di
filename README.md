@@ -10,7 +10,7 @@
 A Dependency Injection (DI) library in typescript without using decorators.
 
 
-Dependency injection is a software design pattern that implements inversion of control for resolving dependencies. A dependency is an object that can be used (a service). An injection is the passing of a dependency to a dependent object (a client) that would use it.
+Dependency injection is a software design pattern that implements inversion of control for resolving dependencies. A dependency is an object that can be used (a service). An injection is the passing of a dependency to a dependent object (a client) that would use it. For more information about this pattern look at: [Dependency injection](http://en.wikipedia.org/wiki/Dependency_injection) and [Inversion of control](http://en.wikipedia.org/wiki/Inversion_of_control).
 
 ### Motivation
 There are a lot of dependency injection libraries for JavaScript/Typescript out there, this is not new.  The one thing we're trying to achieve here is the ability to take advantage of such a library but without coupling it into the application's domain. The main goal here is to create a library that you can use without using third part code into your domains.
@@ -83,7 +83,7 @@ container.registerServiceBuilded("dataBaseUser", "root");
 
 const dataBaseUser: string = container.get("@dataBaseUser");
 
- ```
+  ```
 
 ### Registering external dependencies/properties with an object in bulk mode:
 
@@ -216,5 +216,42 @@ container.callAllServicesWithAutoInit();
  - `npm run lint`: Check the code using the rules in .eslintre.js
  - `npm run lint:fix`: Check the code and try to fix it.
 
+
+
+### Changelog
+
+All notable changes to this project will be documented in this section.
+
+### 1.0.1 - 2020-04-07
+
+#### Changed
+
+- Remove not catching exceptions.
+- Remove unused dev dependencies.
+
+### 1.0.0 - 2020-04-06
+
+#### Added
+
+- Support for external dependencies declaration
+- Now the properties and the external services are called with @
+
+#### Changed
+
+- Remove unused dependency.
+- Fixed circular dependencies
+
+
+
+### Contributing
+
+When submitting your pull-request try to follow those guides:
+
+- https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github
+- https://medium.com/@vadimdemedes/making-your-first-contribution-de6576ddb190
+
+
+
 ### License
+
 MIT
